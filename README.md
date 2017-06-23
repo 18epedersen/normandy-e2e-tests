@@ -1,17 +1,29 @@
 Normandy-e2e-tests
 ====================
 
-# Summary
 
-Lorem Ipsum bla bla yadda
+Summary
+-------
+Suite of e2e tests for Mozilla's Normandy Control UI.
+
+Read about the Normandy Control shield here: https://wiki.mozilla.org/Firefox/Shield 
+
+Github repo for Normandy: https://github.com/mozilla/normandy
+
+Install
+-------
 
 
-# Install
-
-To install the tests locally:
+To install the requirements for the tests locally:
 
 ```
-echo "yo homey"
+pip install -rrequirements.txt
 ```
 
-# Run
+Run
+-------
+To run the tests locally:
+
+```
+tox
+```
