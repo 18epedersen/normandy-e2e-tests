@@ -27,3 +27,5 @@ To run the tests locally:
 ```
 tox
 ```
+
+The tests require a variables.json file with LDAP username, LDAP password, QR code secret, and other variables that select options of the Recipe form. I've provided a variables-demo.json file to demonstrate the syntax and content of the variables.json file you need to run the tests.
