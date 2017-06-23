@@ -72,7 +72,7 @@ def select_form_countries(selenium, CSS, variables_value):
     select = Select(WebDriverWait(selenium, timeout=15).until(
      EC.visibility_of_element_located((
       By.CSS_SELECTOR, CSS))))
-    # TODO: (paste issue number)
+    # TODO: https://github.com/mozilla/normandy/issues/609
     # available locale has to be selected twice
     for option in select.options:
         val = option.get_attribute("value")
