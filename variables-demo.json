@@ -1,0 +1,11 @@
+{
+  "username": "YOUR LDAP USERNAME",
+  "password": "YOUR LDAP PASSWORD",
+  "secret": "YOUR QR SECRET",
+  "name": "NAME",
+  "available_locales":"de-AT",
+  "available_countries":"GL",
+  "additional filters": "true",
+  "action": "console-log",
+  "message": "Testing Message"
+}
