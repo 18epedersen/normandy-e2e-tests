@@ -64,48 +64,6 @@ def login(base_url, selenium, variables):
     selenium.switch_to_default_content()
 
 
-def select_form_countries(selenium, CSS, variables_value):
-    """Selects a filter for Recipe."""
-    print("in select form countires")
-    print("CSS ", CSS)
-    print("variables_value ", variables_value)
-    select = Select(WebDriverWait(selenium, timeout=15).until(
-     EC.visibility_of_element_located((
-      By.CSS_SELECTOR, CSS))))
-    # TODO: https://github.com/mozilla/normandy/issues/609
-    # available locale has to be selected twice
-    for option in select.options:
-        val = option.get_attribute("value")
-        print("val is ", val)
-        if val == variables_value:
-            print("in If statement selected ", val)
-            select.select_by_value(val)
-
-
-def click_form_buttons(selenium, CSS):
-    """Clicks button for the available locales \
-    and available countries fields."""
-    print("in click form buttons")
-    add_button = WebDriverWait(selenium, timeout=15).until(
-     EC.visibility_of_element_located((
-      By.CSS_SELECTOR, CSS)))
-    if add_button.is_enabled():
-        print("button is enabled")
-        add_button.click()
-    else:
-        print("button is not enabled")
-
-
-def select_channels(selenium, CSS_list):
-    """Select channels for recipe."""
-    print("in select channels")
-    for css in CSS_list:
-        print("css is ", css)
-        WebDriverWait(selenium, timeout=15).until(
-         EC.visibility_of_element_located((
-          By.CSS_SELECTOR, css))).click()
-
-
 def additional_filters(selenium, name, variables):
     """ Sending in a message for additional filters."""
     print("in additional filters")
@@ -145,40 +103,15 @@ def test_create_recipe(base_url, selenium, variables):
         WebDriverWait(selenium, timeout=15).until(
          EC.visibility_of_element_located((
           By.CSS_SELECTOR, name_CSS))).send_keys(variables['name'])
-        # The available locales form CSS
-        available_locales_form_CSS = "div.form-field:nth-child(2) > div:nth-child(1) \
-        > fieldset:nth-child(1) > select:nth-child(3)"
-        # selecting a specific locale
-        time.sleep(5)
-        select_form_countries(selenium, available_locales_form_CSS,
-                              variables["available_locales"])
-        # finding the add locales button
-        add_locales_button_css = "div.form-field:nth-child(2) > \
-        div:nth-child(1) > fieldset:nth-child(1) > button:nth-child(4)"
-        time.sleep(5)
-        click_form_buttons(selenium, add_locales_button_css)
-        available_countries_form_CSS = "div.form-field:nth-child(3) > \
-        div:nth-child(1) > fieldset:nth-child(1) > select:nth-child(3)"
-        time.sleep(5)
-        select_form_countries(selenium, available_countries_form_CSS,
-                              variables["available_countries"])
-        add_countries_button_css = "div.form-field:nth-child(3) > \
-        div:nth-child(1) > fieldset:nth-child(1) > button:nth-child(4)"
-        time.sleep(5)
-        click_form_buttons(selenium, add_countries_button_css)
-        # selecting developer and release
-        release_channels_CSS_list = ["label.checkbox:nth-child(1) > \
-        input:nth-child(1)", "label.checkbox:nth-child(4) > \
-        input:nth-child(1)"]
-        # method to select those channels
-        select_channels(selenium, release_channels_CSS_list)
         name = "extra_filter_expression"
-        # writing an additional filter message
+        # additional filter message
         additional_filters(selenium, name, variables)
         action_name = "action"
         # selecting an action
         action_configuration(selenium, action_name, variables)
         # clicking save  button
+        # TODO: https://github.com/mozilla/normandy/issues/522
+        # can't save recipe after filling out recipe form
         save_recipe_class_name = "action-new"
         WebDriverWait(selenium, timeout=15).until(
          EC.visibility_of_element_located((
