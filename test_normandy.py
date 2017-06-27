@@ -116,7 +116,40 @@ def test_create_recipe(base_url, selenium, variables):
         WebDriverWait(selenium, timeout=15).until(
          EC.visibility_of_element_located((
           By.CLASS_NAME, save_recipe_class_name))).click()
-        time.sleep(50)
+        # request approval of recipe
+        request_approval_CSS = "button.button:nth-child(3)"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, request_approval_CSS))).click()
+        # approve recipe
+        approve_CSS = ".action-approve"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, approve_CSS))).click()
+        # send keys to text area
+        text_area_CSS = ".approve-dropdown > textarea:nth-child(1)"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, text_area_CSS))).send_keys(
+                    variables['approve'])
+        # clicking approve of message
+        comment_approve_CSS = ".mini-button"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, comment_approve_CSS))).click()
+        # clicking enable recipe
+        enable_CSS = ".action-enable"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, enable_CSS))).click()
+        # clicking confirm
+        confirm_CSS = ".submit"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, confirm_CSS))).click()
+        # checking that the recipe exists on the Normandy Control dashboard
+        # wait for the notificaitions to clear and return to recipe page
+        time.sleep(20)
         assert True
     except NoSuchElementException:
         print("exception")

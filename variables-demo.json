@@ -5,5 +5,6 @@
   "name": "NAME",
   "additional filters": "true",
   "action": "console-log",
-  "message": "Testing Message"
+  "message": "Testing Message",
+  "approve": "Approved!"
 }
