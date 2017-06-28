@@ -6,4 +6,4 @@ variables.json
 *.html
 .tox
 assets
-test_normandy_copy
+test_normandy_copy.py
