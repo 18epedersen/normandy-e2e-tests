@@ -149,7 +149,12 @@ def test_create_recipe(base_url, selenium, variables):
                 By.CSS_SELECTOR, confirm_CSS))).click()
         # checking that the recipe exists on the Normandy Control dashboard
         # wait for the notificaitions to clear and return to recipe page
-        time.sleep(20)
+        time.sleep(10)
+        recipes_CSS = ".breadcrumbs > span:nth-child(1) > a:nth-child(1)"
+        WebDriverWait(selenium, timeout=15).until(
+            EC.visibility_of_element_located((
+                By.CSS_SELECTOR, recipes_CSS))).click()
+        time.sleep(500)
         assert True
     except NoSuchElementException:
         print("exception")
