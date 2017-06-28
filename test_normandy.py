@@ -1,5 +1,6 @@
 import pytest
 import time
+import uuid
 import pyotp
 from PyPOM import Page
 from selenium.webdriver.common.by import By
@@ -12,38 +13,34 @@ from selenium.webdriver.support.ui import Select
 @pytest.fixture(scope='session')
 def base_url():
     """Grabbing the base url of the Normandy Control UI."""
-
     return 'https://normandy-admin.stage.mozaws.net/control/recipe/'
 
 
 def generate_QR_code(secret):
     """Generating the QR code for 2FA."""
-
     totp = pyotp.TOTP(secret)
     return totp.now()
 
 
 class Base(Page):
-    """ Defining a base class. """
+    """Defining a base class."""
 
     _error_locator = ""
     _heading_locator = ""
 
     @property
     def error(self):
-        """ Error heading."""
-
+        """Error heading."""
         return self.find_element(*self._error_locator).text
 
     @property
     def heading(self):
-        """" Heading. """
-
+        """Heading."""
         return self.find_element(*self._heading_locator).text
 
 
 class Login(Base):
-    """ Loginning into LDAP account. """
+    """Loginning into LDAP account."""
 
     URL_TEMPLATE = '/login'
     _username_locator = (By.CLASS_NAME, 'auth0-lock-input-username')
@@ -51,22 +48,20 @@ class Login(Base):
     _submit_locator = (By.CSS_SELECTOR, ".auth0-lock-submit")
 
     def wait_for_page_to_load(self):
-        """" Overwriting the wait for page load method to wait for submit."""
-
+        """Overwriting the wait for page load method to wait for submit."""
         self.wait.until(EC.visibility_of_element_located(self._submit_locator))
         return self
 
     def login(self, username, password):
-        """ Logging in to duo."""
-
+        """Logging in with demo LDAP."""
         self.find_element(*self._username_locator).send_keys(username)
         self.find_element(*self._password_locator).send_keys(password)
         self.find_element(*self._submit_locator).click()
-        return True
+        return Duo(self.selenium, self.base_url).wait_for_page_to_load()
 
 
 class Duo(Base):
-    """ Duo authenication class. """
+    """Duo authenication class."""
 
     _a0notloggedin_locator = 'a0-notloggedin'
     _duoiframe_locator = 'duo_iframe'
@@ -76,153 +71,155 @@ class Duo(Base):
     _QRinput_locator = 'div.passcode-label:nth-child(1) > input:nth-child(4)'
     _login_locator = 'button.positive:nth-child(5)'
 
+    def wait_for_page_to_load(self):
+        """Waiting for the a0-notloggedin class to load."""
+        self.wait.until(EC.visibility_of_element_located(
+           self._a0notloggedin_locator))
+        return self
+
+    def login_duo(self, secret):
+        """Loginning into duo."""
+        select = Select(self.find_element(*self._dropdown_locator))
+        select.select_by_value(*self._token_locator)
+        self.find_element(*self._passcode_locator).click()
+        QR_code = generate_QR_code(secret)
+        self.find_element(*self._QRinput_locator).send_keys(QR_code)
+        self.find_element(*self._login_locator).click()
+        return Home(self.selenium, self.base_url).wait_for_page_to_load()
+
+
+class Home(Base):
+    """Class for Normandy Control UI Home."""
+
+    _addrecipe_locator = ".button"
+    # locator for recipe table
+
+    def wait_for_page_to_load(self):
+        """Overwriting wait for page to load."""
+        self.wait.until(EC.visibility_of_element_located(
+           self._addrecipe_locator))
+        return self
+
+    def add_recipe(self):
+        """Adding a new recipe."""
+        self.find_element(*self._addrecipe_locator).click()
+        return Recipe(self.selenium, self.base_url).wait_for_page_to_load()
+
+
+class Recipe(Base):
+    """Normandy recipe page for creating a recipe."""
+
+    _name_locator = 'label.form-field:nth-child(1) > input:nth-child(2)'
+    _filters_locator = 'extra_filter_expression'
+    _action_locator = 'action'
+    _actionmessage_locator = 'arguments.message'
+    _save_locator = 'action-new'
+
+    def wait_for_page_to_load(self):
+        """Overwriting wait for method."""
+        self.wait.until(EC.visibility_of_element_located(
+          self._name_locator))
+        return self
+
+    def create_recipe(self, filter_message, action, action_message):
+        """Creating a recipe with a unique UID."""
+        recipe_id = uuid.uuid1()
+        self.find_element(*self._name_locator).send_keys(recipe_id)
+        self.find_element(*self._filters_locator).send_keys(filter_message)
+        select = Select(self.find_element(*self._action_locator))
+        select.select_by_value(action)
+        self.find_element(*self._actionmessage_locator).send_keys(
+         action_message)
+        self.find_element(*self._save_locator).click()
+        return Approval(self.selenium, self.base_url).wait_for_page_to_load()
+
+
+class Approval(Base):
+    """Normandy page for approving a recipe."""
+
+    _request_locator = 'button.button:nth-child(3)'
+    _approve_locator = '.action-approve'
+    _approvemessage_locator = ".approve-dropdown > textarea:nth-child(1)"
+    _approvemessagebutton_locator = '.mini-button'
+    _enable_locator = ".action-enable"
+    _confirm_locator = ".submit"
+    _recipesbreadcrumb_locator = '.breadcrumbs > \
+    span:nth-child(1) > a:nth-child(1)'
+
+    def wait_for_page_to_load(self):
+        """"Overwriting wait."""
+        self.wait.until(EC.visibility_of_element_located(
+          self._request_locator))
+        return self
+
+    def approve_recipe(self, approve_message):
+        """Approving a recipe."""
+        self.find_element(*self._request_locator).click()
+        self.find_element(*self._approve_locator).click()
+        self.find_element(*self._approvemessage_locator).send_keys(
+           approve_message)
+        self.find_element(*self._approvemessagebutton_locator).click()
+        self.find_element(*self._enable_locator).click()
+        self.find_element(*self._confirm_locator).click()
+        time.sleep(10)
+        self.find_element(*self._recipesbreadcrumb_locator).click()
+        return Home(self.selenium, self.base_url).wait_for_page_to_load()
+
 
 @pytest.mark.nondestructive
 def test_login(base_url, selenium, variables):
-    """ Testing loginning into the demo LDAP account. """
+    """Testing can successful login into the demo LDAP account."""
+    page = Login(selenium, base_url).open()
+    page.login(variables['username'], variables['password'])
+    # need to fix assert statment to assert header is duo iframe
+    assert page.heading == "duo"
 
-    login_page = Login(selenium, base_url).open()
-    login_page.login(variables['username'], variables['password'])
-    print("hello enter enter login")
-    assert False
+
+@pytest.mark.nondestructive
+def test_duo(base_url, selenium, variables):
+    """Testing can successfully login Normandy."""
+    """Passing auth0 by providing a correct QR code."""
+    page = Login(selenium, base_url).open()
+    duo = page.login(variables['username'], variables["password"])
+    duo.switch_to_frame(
+      duo.find_element(*duo._duoiframe_locator))
+    home = duo.login_duo(variables['secret'])
+    home.switch_to_default_content()
+    # fix assert statement
+    assert home.heading == "shield"
 
 
-# def login(base_url, selenium, variables):
-#     """Automatting loginning into Normandy Control UI with demo LDAP
-#     and authenicating auth0 with 6 digit QR code."""
-#     selenium.get(base_url)
-#     WebDriverWait(selenium, timeout=5).until(
-#         EC.visibility_of_element_located((By.CLASS_NAME,
-#                                           'auth0-lock-input-username')))
-#     username = selenium.find_element(By.CLASS_NAME,
-#                                      'auth0-lock-input-username')
-#     username.send_keys(variables['username'])
-#     WebDriverWait(selenium, timeout=5).until(
-#         EC.visibility_of_element_located((By.NAME, 'password')))
-#     password = selenium.find_element(By.NAME, 'password')
-#     password.send_keys(variables['password'])
-#     selenium.find_element(By.CSS_SELECTOR, ".auth0-lock-submit").click()
-#     WebDriverWait(selenium, timeout=5).until(
-#         EC.visibility_of_element_located(
-#              (By.CLASS_NAME, 'a0-notloggedin')))
-#     selenium.switch_to_frame(selenium.find_element(By.ID, "duo_iframe"))
-#     WebDriverWait(selenium, timeout=5).until(
-#         EC.visibility_of_element_located(
-#                             (By.CSS_SELECTOR, '.device-select-wrapper')))
-#     select_CSS = '.device-select-wrapper > select:nth-child(1)'
-#     select = Select(selenium.find_element(By.CSS_SELECTOR, select_CSS))
-#     select.select_by_value('token')
-#     passcode_CSS = 'button.positive:nth-child(5)'
-#     enter_passcode_button = WebDriverWait(selenium, timeout=5).until(
-#                 EC.visibility_of_element_located(
-#                    (By.CSS_SELECTOR, passcode_CSS)))
-#     enter_passcode_button.click()
-#     QR_code = generate_QR_code(variables['secret'])
-#     passEnter_CSS = 'div.passcode-label:nth-child(1) > input:nth-child(4)'
-#     passcode_element = WebDriverWait(selenium, timeout=5).until(
-#                 EC.visibility_of_element_located(
-#                    (By.CSS_SELECTOR, passEnter_CSS)))
-#     passcode_element.send_keys(QR_code)
-#     login_CSS = 'button.positive:nth-child(5)'
-#     login_button = WebDriverWait(selenium, timeout=5).until(
-#                 EC.visibility_of_element_located(
-#                    (By.CSS_SELECTOR, login_CSS)))
-#     login_button.click()
-#     selenium.switch_to_default_content()
-#
-#
-# def additional_filters(selenium, name, variables):
-#     """ Sending in a message for additional filters."""
-#     print("in additional filters")
-#     WebDriverWait(selenium, timeout=15).until(
-#      EC.visibility_of_element_located((
-#       By.NAME, name))).send_keys(variables['additional filters'])
-#
-#
-# def action_configuration(selenium, action_name, variables):
-#     """ Selecting an action."""
-#     print("in action configuration")
-#     select = Select(WebDriverWait(selenium, timeout=15).until(
-#      EC.visibility_of_element_located((
-#       By.NAME, action_name))))
-#     select.select_by_value(variables['action'])
-#     message_box_element_name = "arguments.message"
-#     WebDriverWait(selenium, timeout=15).until(
-#      EC.visibility_of_element_located((
-#       By.NAME, message_box_element_name))).send_keys(variables['message'])
-#
-#
-# @pytest.mark.nondestructive
-# def test_create_recipe(base_url, selenium, variables):
-#     """ Testing creating a new recipe and checking that
-#     the new elements are there."""
-#     try:
-#         login(base_url, selenium, variables)
-#         add_new_CSS = ".button"
-#         # adding a new recipe
-#         add_new_button = WebDriverWait(selenium, timeout=15).until(
-#          EC.visibility_of_element_located((
-#           By.CSS_SELECTOR, add_new_CSS)))
-#         add_new_button.click()
-#         name_CSS = "label.form-field:nth-child(1) > input:nth-child(2)"
-#         # naming new recipe
-#         time.sleep(5)
-#         WebDriverWait(selenium, timeout=15).until(
-#          EC.visibility_of_element_located((
-#           By.CSS_SELECTOR, name_CSS))).send_keys(variables['name'])
-#         name = "extra_filter_expression"
-#         # additional filter message
-#         additional_filters(selenium, name, variables)
-#         action_name = "action"
-#         # selecting an action
-#         action_configuration(selenium, action_name, variables)
-#         # clicking save  button
-#         # TODO: https://github.com/mozilla/normandy/issues/522
-#         # can't save recipe after filling out recipe form
-#         save_recipe_class_name = "action-new"
-#         WebDriverWait(selenium, timeout=15).until(
-#          EC.visibility_of_element_located((
-#           By.CLASS_NAME, save_recipe_class_name))).click()
-#         # request approval of recipe
-#         request_approval_CSS = "button.button:nth-child(3)"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, request_approval_CSS))).click()
-#         # approve recipe
-#         approve_CSS = ".action-approve"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, approve_CSS))).click()
-#         # send keys to text area
-#         text_area_CSS = ".approve-dropdown > textarea:nth-child(1)"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, text_area_CSS))).send_keys(
-#                     variables['approve'])
-#         # clicking approve of message
-#         comment_approve_CSS = ".mini-button"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, comment_approve_CSS))).click()
-#         # clicking enable recipe
-#         enable_CSS = ".action-enable"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, enable_CSS))).click()
-#         # clicking confirm
-#         confirm_CSS = ".submit"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, confirm_CSS))).click()
-#         # checking that the recipe exists on the Normandy Control dashboard
-#         # wait for the notificaitions to clear and return to recipe page
-#         time.sleep(10)
-#         recipes_CSS = ".breadcrumbs > span:nth-child(1) > a:nth-child(1)"
-#         WebDriverWait(selenium, timeout=15).until(
-#             EC.visibility_of_element_located((
-#                 By.CSS_SELECTOR, recipes_CSS))).click()
-#         time.sleep(500)
-#         assert True
-#     except NoSuchElementException:
-#         print("exception")
-#         assert False
+@pytest.mark.destructive
+def test_creating_recipe(base_url, selenium, variables):
+    """Testing creating a recipe and successfully submit it."""
+    page = Login(selenium, base_url).open()
+    duo = page.login(variables['username'], variables["password"])
+    duo.switch_to_frame(
+      duo.find_element(*duo._duoiframe_locator))
+    home = duo.login_duo(variables['secret'])
+    home.switch_to_default_content()
+    recipe = home.add_recipe()
+    approval = recipe.create_recipe(variables['additional filters'],
+                                    variables['action'], variables['message'])
+    # or check that we get a flash of successfully added recipe
+    assert approval.heading == "recipes"
+
+
+# test to successfully approval a recipe
+@pytest.mark.destructive
+def test_approving_recipe(base_url, selenium, variables):
+    """Testing the approval flow of a recipe."""
+    page = Login(selenium, base_url).open()
+    duo = page.login(variables['username'], variables["password"])
+    duo.switch_to_frame(
+      duo.find_element(*duo._duoiframe_locator))
+    home = duo.login_duo(variables['secret'])
+    home.switch_to_default_content()
+    recipe = home.add_recipe()
+    approval = recipe.create_recipe(variables['additional filters'],
+                                    variables['action'], variables['message'])
+    home = approval.approve_recipe(variables['approve'])
+    # fix assert statement
+    assert home.heading == "shield"
+
+# test to successfully find a recipe in a table, use regions
