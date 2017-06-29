@@ -2,31 +2,29 @@ import pytest
 import time
 import uuid
 import pyotp
-from PyPOM import Page
+from pypom import Page
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import Select
 
 
 @pytest.fixture(scope='session')
 def base_url():
-    """Grabbing the base url of the Normandy Control UI."""
+    """Grab the base url of the Normandy Control UI."""
     return 'https://normandy-admin.stage.mozaws.net/control/recipe/'
 
 
 def generate_QR_code(secret):
-    """Generating the QR code for 2FA."""
+    """Return the QR code for 2FA."""
     totp = pyotp.TOTP(secret)
     return totp.now()
 
 
 class Base(Page):
-    """Defining a base class."""
+    """Define a base class."""
 
     _error_locator = ""
-    _heading_locator = ""
+    _heading_locator = (By.TAG_NAME, "h1")
 
     @property
     def error(self):
@@ -40,7 +38,7 @@ class Base(Page):
 
 
 class Login(Base):
-    """Loginning into LDAP account."""
+    """Login class for demo LDAP account."""
 
     URL_TEMPLATE = '/login'
     _username_locator = (By.CLASS_NAME, 'auth0-lock-input-username')
@@ -48,16 +46,16 @@ class Login(Base):
     _submit_locator = (By.CSS_SELECTOR, ".auth0-lock-submit")
 
     def wait_for_page_to_load(self):
-        """Overwriting the wait for page load method to wait for submit."""
+        """Wait for page load method for submit."""
         self.wait.until(EC.visibility_of_element_located(self._submit_locator))
         return self
 
     def login(self, username, password):
-        """Logging in with demo LDAP."""
+        """Return Duo class after logging in with demo LDAP."""
         self.find_element(*self._username_locator).send_keys(username)
         self.find_element(*self._password_locator).send_keys(password)
         self.find_element(*self._submit_locator).click()
-        return Duo(self.selenium, self.base_url).wait_for_page_to_load()
+        # return Duo(self.selenium, self.base_url).wait_for_page_to_load()
 
 
 class Duo(Base):
@@ -72,13 +70,13 @@ class Duo(Base):
     _login_locator = 'button.positive:nth-child(5)'
 
     def wait_for_page_to_load(self):
-        """Waiting for the a0-notloggedin class to load."""
+        """Wait for page load method for a0-notloggedin class to load."""
         self.wait.until(EC.visibility_of_element_located(
-           self._a0notloggedin_locator))
+          self._a0notloggedin_locator))
         return self
 
     def login_duo(self, secret):
-        """Loginning into duo."""
+        """Login into duo."""
         select = Select(self.find_element(*self._dropdown_locator))
         select.select_by_value(*self._token_locator)
         self.find_element(*self._passcode_locator).click()
@@ -95,13 +93,13 @@ class Home(Base):
     # locator for recipe table
 
     def wait_for_page_to_load(self):
-        """Overwriting wait for page to load."""
+        """Wait for page to load."""
         self.wait.until(EC.visibility_of_element_located(
            self._addrecipe_locator))
         return self
 
     def add_recipe(self):
-        """Adding a new recipe."""
+        """Add a new recipe."""
         self.find_element(*self._addrecipe_locator).click()
         return Recipe(self.selenium, self.base_url).wait_for_page_to_load()
 
@@ -116,13 +114,13 @@ class Recipe(Base):
     _save_locator = 'action-new'
 
     def wait_for_page_to_load(self):
-        """Overwriting wait for method."""
+        """Wait for method."""
         self.wait.until(EC.visibility_of_element_located(
           self._name_locator))
         return self
 
     def create_recipe(self, filter_message, action, action_message):
-        """Creating a recipe with a unique UID."""
+        """Create a recipe with a unique UID."""
         recipe_id = uuid.uuid1()
         self.find_element(*self._name_locator).send_keys(recipe_id)
         self.find_element(*self._filters_locator).send_keys(filter_message)
@@ -147,13 +145,13 @@ class Approval(Base):
     span:nth-child(1) > a:nth-child(1)'
 
     def wait_for_page_to_load(self):
-        """"Overwriting wait."""
+        """Wait method."""
         self.wait.until(EC.visibility_of_element_located(
           self._request_locator))
         return self
 
     def approve_recipe(self, approve_message):
-        """Approving a recipe."""
+        """Approve a recipe."""
         self.find_element(*self._request_locator).click()
         self.find_element(*self._approve_locator).click()
         self.find_element(*self._approvemessage_locator).send_keys(
@@ -168,17 +166,16 @@ class Approval(Base):
 
 @pytest.mark.nondestructive
 def test_login(base_url, selenium, variables):
-    """Testing can successful login into the demo LDAP account."""
+    """Test successful login into demo LDAP account."""
     page = Login(selenium, base_url).open()
     page.login(variables['username'], variables['password'])
-    # need to fix assert statment to assert header is duo iframe
-    assert page.heading == "duo"
+    assert page.heading == "2-Step Verification"
 
 
 @pytest.mark.nondestructive
 def test_duo(base_url, selenium, variables):
-    """Testing can successfully login Normandy."""
-    """Passing auth0 by providing a correct QR code."""
+    """Test successfully login Normandy."""
+    """Pass auth0 by providing the correct QR code."""
     page = Login(selenium, base_url).open()
     duo = page.login(variables['username'], variables["password"])
     duo.switch_to_frame(
@@ -191,7 +188,7 @@ def test_duo(base_url, selenium, variables):
 
 @pytest.mark.destructive
 def test_creating_recipe(base_url, selenium, variables):
-    """Testing creating a recipe and successfully submit it."""
+    """Test creating a recipe and successfully submitting it."""
     page = Login(selenium, base_url).open()
     duo = page.login(variables['username'], variables["password"])
     duo.switch_to_frame(
@@ -208,7 +205,7 @@ def test_creating_recipe(base_url, selenium, variables):
 # test to successfully approval a recipe
 @pytest.mark.destructive
 def test_approving_recipe(base_url, selenium, variables):
-    """Testing the approval flow of a recipe."""
+    """Test the approval flow of a recipe."""
     page = Login(selenium, base_url).open()
     duo = page.login(variables['username'], variables["password"])
     duo.switch_to_frame(
