@@ -1,12 +1,13 @@
+"""Pytest."""
 import pytest
-from page.login import Login
+from page.login import LDAPLoginPage
 
 
 # test to successfully approval a recipe
 @pytest.mark.destructive
 def test_approving_recipe(base_url, selenium, variables):
     """Test the approval flow of a recipe."""
-    page = Login(selenium, base_url).open()
+    page = LDAPLoginPage(selenium, base_url).open()
     duo = page.login(variables['username'], variables["password"])
     duo.switch_to_frame(
       duo.find_element(*duo._duoiframe_locator))
