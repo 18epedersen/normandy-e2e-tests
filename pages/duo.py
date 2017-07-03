@@ -4,16 +4,6 @@ from selenium.webdriver.support.ui import Select
 from pages.base import BasePage
 from pages.home import HomePage
 import pyotp
-import pytest
-import configparser
-
-
-@pytest.fixture
-def conf():
-    """Read config.ini file."""
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    return config
 
 
 def generate_QR_code(secret):

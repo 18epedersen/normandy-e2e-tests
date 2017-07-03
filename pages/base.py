@@ -1,15 +1,5 @@
 """Page object model."""
 from pypom import Page
-import configparser
-import pytest
-
-
-@pytest.fixture
-def conf():
-    """Read config.ini file."""
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    return config
 
 
 class BasePage(Page):

@@ -6,4 +6,5 @@ variables.json
 *.html
 .tox
 assets
-test_normandy_copy.py
+config.ini
+*.pyc
