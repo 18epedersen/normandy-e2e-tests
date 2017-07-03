@@ -29,4 +29,4 @@ tox
 ```
 To run the tests, you need to be connected to the Mozilla VPN server. 
 
-The tests also require a variables.json file with LDAP username, LDAP password, QR code secret, and other variables that select options of the Recipe form. I've provided a variables-demo.json file to demonstrate the syntax and content of the variables.json file you need to run the tests.
+The tests also require a config.ini file with confidental LDAP username, LDAP password, and QR code secret. I've provided a config.ini-dist file, which needs to be copied over into a config.ini in the home directory and values for username, password, and secret need to be filled in. 

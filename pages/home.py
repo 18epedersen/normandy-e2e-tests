@@ -1,22 +1,12 @@
 """By method for selenium webdriver."""
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from pages.base import BasePage
-import pytest
-import configparser
+from pages.base import Base
 import uuid
 import time
 
 
-@pytest.fixture
-def conf():
-    """Read config.ini file."""
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    return config
-
-
-class HomePage(BasePage):
+class Home(Base):
     """Class for Normandy Control UI Home."""
 
     def __init__(self, conf):
@@ -34,9 +24,9 @@ class HomePage(BasePage):
         self.approvebutton_locator = conf.get('recipe',
                                               'approvebutton_locator')
         self.approvemessagetextbox_locator = conf.get('recipe',
-                                                      'approvemessagetextbox_locator')
+                                                      'approvemessagetextbox_locator') # noqa
         self.approvemessagebutton_locator = conf.get('recipe',
-                                                     'approvemessagebutton_locator')
+                                                     'approvemessagebutton_locator') # noqa
         self.enablebutton_locator = conf.get('recipe', 'enablebutton_locator')
         self.confirmbutton_locator = conf.get('recipe',
                                               'confirmbutton_locator')
@@ -75,4 +65,4 @@ class HomePage(BasePage):
         self.find_element(*self._confirmbutton_locator).click()
         time.sleep(10)
         self.find_element(*self._recipesbreadcrumb_locator).click()
-        return HomePage(self.selenium, self.base_url).wait_for_page_to_load()
+        return Home(self.selenium, self.base_url).wait_for_page_to_load()

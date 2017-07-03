@@ -1,0 +1,47 @@
+[base]
+heading_locator = (By.TAG_NAME, "h1")
+error_locator = ()
+
+[login]
+username_locator = (By.CLASS_NAME, 'auth0-lock-input-username')
+password_locator = (By.NAME, 'password')
+submit_locator = (By.CSS_SELECTOR, ".auth0-lock-submit")
+
+
+[duo]
+a0notloggedin_locator = (By.CLASS_NAME, 'a0-notloggedin')
+duoiframe_locator = (By.ID,'duo_iframe)
+dropdown_locator = (By.CSS_SELECTOR, '.device-select-wrapper > select:nth-child(1)')
+value = 'token'
+passcodebutton_locator = (By.CSS_SELECTOR, 'button.positive:nth-child(5)')
+QRinput_locator = (By.CSS_SELECTOR, 'div.passcode-label:nth-child(1) > input:nth-child(4)')
+loginbutton_locator = (By.CSS_SELECTOR, 'button.positive:nth-child(5)')
+
+[home]
+addbutton_locator = (By.CSS_SELECTOR, ".button")
+
+[recipe]
+name_locator = (By.CSS_SELECTOR, 'label.form-field:nth-child(1) > input:nth-child(2)')
+filtertextbox_locator = (By.NAME, 'extra_filter_expression')
+action_locator = (By.NAME, 'action')
+actionmessage_locator = (By.NAME, 'arguments.message')
+saverecipe_locator = (By.CLASS_NAME, 'action-new')
+requestbutton_locator = (By.CSS_SELECTOR, 'button.button:nth-child(3)')
+approvebutton_locator = (By.CSS_SELECTOR, '.action-approve')
+approvemessagetextbox_locator (By.CSS_SELECTOR, ".approve-dropdown > textarea:nth-child(1)")
+approvemessagebutton_locator = (By.CSS_SELECTOR, '.mini-button')
+enablebutton_locator = (By.CSS_SELECTOR, ".action-enable")
+confirmbutton_locator = (By.CSS_SELECTOR, ".submit")
+recipesbreadcrumb_locator = (By.CSS_SELECTOR, '.breadcrumbs > span:nth-child(1) > a:nth-child(1)')
+
+[stage]
+base_url = https://normandy-admin.stage.mozaws.net/control/recipe/
+
+[variables]
+username =
+password =
+secret = 
+additional_filters = true
+action = console-log
+message = testing message
+approve = approved!

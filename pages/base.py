@@ -2,7 +2,7 @@
 from pypom import Page
 
 
-class BasePage(Page):
+class Base(Page):
     """Define a base class."""
 
     def __init__(self, conf):

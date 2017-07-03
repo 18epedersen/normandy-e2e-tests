@@ -1,18 +1,12 @@
 """Expected conditions."""
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
-from pages.base import BasePage
-from pages.home import HomePage
-import pyotp
+from pages.base import Base
+from pages.home import Home
+from tests.conftest import generate_QR_code
 
 
-def generate_QR_code(secret):
-    """Return the QR code for 2FA."""
-    totp = pyotp.TOTP(secret)
-    return totp.now()
-
-
-class DuoLoginPage(BasePage):
+class DuoLogin(Base):
     """Duo authenication class."""
 
     def __init__(self, conf):
@@ -39,4 +33,4 @@ class DuoLoginPage(BasePage):
         QR_code = generate_QR_code(secret)
         self.find_element(*self.QRinput_locator).send_keys(QR_code)
         self.find_element(*self.loginbutton_locator).click()
-        return HomePage(self.selenium, self.base_url).wait_for_page_to_load()
+        return Home(self.selenium, self.base_url).wait_for_page_to_load()
