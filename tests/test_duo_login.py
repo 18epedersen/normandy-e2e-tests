@@ -7,15 +7,12 @@ from pages.login import LDAPLogin
 def test_duo_login(conf, base_url, selenium):
     """Test successfully login Normandy."""
     """Pass auth0 by providing the correct QR code."""
-    base_url = conf.get('stage', 'base_url')
+    # base_url = conf.get('stage', 'base_url')
     username = conf.get('variables', 'username')
     password = conf.get('variables', 'password')
-    page = LDAPLogin(selenium, base_url).open()
-    duo = page.login(username, password)
-    duo.switch_to_frame(
-      duo.find_element(*duo.duoiframe_locator))
+    ldap_page = LDAPLogin(selenium, base_url)
+    ldap_page.open()
+    duo_page = ldap_page.login(username, password)
     secret = conf.get('variables', 'secret')
-    home = duo.login_duo(secret)
-    home.switch_to_default_content()
-    # fix assert statement
-    assert home.heading == 'shield'
+    home_page = duo_page.login_duo(secret)
+    assert home_page.heading == 'SHIELD Control Panel'
