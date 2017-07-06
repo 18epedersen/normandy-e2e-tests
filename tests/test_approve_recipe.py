@@ -1,6 +1,6 @@
 """Pytest."""
 import pytest
-from page.login import LDAPLogin
+from page.ldap_login import LDAPLogin
 
 
 # test to successfully approval a recipe

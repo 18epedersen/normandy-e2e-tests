@@ -10,6 +10,12 @@ class Recipe(Base):
 
     LOCATORS = locators.Recipe
 
+    # def wait_for_page_to_load(self):
+    #     """Wait for page load method for submit."""
+    #     # self.wait.until(EC.visibility_of_element_located(self.submit_locator))
+    #     self.wait.until(EC.visibility_of_element_located(self.LOCATORS.requestbutton))
+    #     return self
+
     def save_recipe(self, filter_message, action, action_message):
         """Save recipe with a unique UID."""
         recipe_id = uuid.uuid1()
@@ -19,6 +25,7 @@ class Recipe(Base):
         select.select_by_value(action)
         self.find_element(*self.LOCATORS.actionmessage).send_keys(action_message)
         self.find_element(*self.LOCATORS.save).click()
+        return Recipe(self.selenium, self.base_url).wait_for_page_to_load()
         # return Approval(self.selenium, self.base_url).wait_for_page_to_load()
 
     def approve_recipe(self, approve_message):

@@ -8,7 +8,7 @@ class Base:
     error = ()
 
 
-class LDAPLogin:
+class LDAPLogin(Base):
     """Locators for LDAPLogin."""
 
     username = (By.CLASS_NAME, 'auth0-lock-input-username')
@@ -16,7 +16,7 @@ class LDAPLogin:
     submit = (By.CSS_SELECTOR, ".auth0-lock-submit")
 
 
-class DuoLogin:
+class DuoLogin(Base):
     """Locators for DuoLogin."""
 
     a0notloggedin = (By.CLASS_NAME, 'a0-notloggedin')
@@ -28,13 +28,13 @@ class DuoLogin:
     loginbutton = (By.CSS_SELECTOR, 'button.positive:nth-child(5)')
 
 
-class Home:
+class Home(Base):
     """Locators for Home."""
 
     addbutton = (By.CSS_SELECTOR, ".button")
 
 
-class Recipe:
+class Recipe(Base):
     """Locators for Recipe."""
 
     name = (By.CSS_SELECTOR, 'label.form-field:nth-child(1) > input:nth-child(2)')

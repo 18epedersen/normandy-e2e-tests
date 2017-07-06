@@ -1,6 +1,6 @@
 """Pytest."""
 import pytest
-from pages.login import LDAPLogin
+from pages.ldap_login import LDAPLogin
 
 
 @pytest.mark.nondestructive
