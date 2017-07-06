@@ -22,7 +22,7 @@ class Base(Page):
     @property
     def heading_two(self):
         """H2 heading."""
-        return self.find_elemenet(*self.LOCATORS.heading_two).text
+        return self.find_element(*self.LOCATORS.heading_two).text
 
     @property
     def error(self):

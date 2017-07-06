@@ -1,9 +1,9 @@
 """Pytest."""
 import pytest
-from page.login import LDAPLogin
+from pages.ldap_login import LDAPLogin
 
 
-@pytest.mark.destructive
+@pytest.mark.nondestructive
 def test_save_recipe(conf, base_url, selenium):
     """Test creating a recipe and successfully submitting it."""
     base_url = conf.get('stage', 'base_url')

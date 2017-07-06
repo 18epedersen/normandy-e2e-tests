@@ -5,6 +5,7 @@ class Base:
     """Locators for Base."""
 
     heading = (By.TAG_NAME, "h1")
+    heading_two = (By.TAG_NAME, "h2")
     error = ()
 
 

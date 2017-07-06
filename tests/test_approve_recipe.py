@@ -4,7 +4,7 @@ from page.ldap_login import LDAPLogin
 
 
 # test to successfully approval a recipe
-@pytest.mark.destructive
+@pytest.mark.nondestructive
 def test_approve_recipe(conf, base_url, selenium):
     """Test the approval flow of a recipe."""
     # base_url = conf.get('stage', 'base_url')
