@@ -32,21 +32,26 @@ class DuoLogin(Base):
 class Home(Base):
     """Locators for Home."""
 
-    addbutton = (By.CSS_SELECTOR, ".button")
+    addbutton = (By.CSS_SELECTOR, '.button')
+    recipelist = (By.CLASS_NAME, 'recipe-list')
+    reactabledata = (By.CLASS_NAME, 'reactable-data')
+    row = (By.TAG_NAME, 'tr')
+    value = (By.TAG_NAME, 'td')
 
 
 class Recipe(Base):
     """Locators for Recipe."""
 
-    name = (By.CSS_SELECTOR, 'label.form-field:nth-child(1) > input:nth-child(2)')
+    name = (By.NAME, 'name')
     filtertextbox = (By.NAME, 'extra_filter_expression')
     action = (By.NAME, 'action')
     actionmessage = (By.NAME, 'arguments.message')
-    saverecipe = (By.CLASS_NAME, 'action-new')
-    requestbutton = (By.CSS_SELECTOR, 'button.button:nth-child(3)')
+    save = (By.CLASS_NAME, 'action-new')
+    requestbutton = (By.CLASS_NAME, 'action-request')
     approvebutton = (By.CSS_SELECTOR, '.action-approve')
     approvemessagetextbox = (By.CSS_SELECTOR, ".approve-dropdown > textarea:nth-child(1)")
     approvemessagebutton = (By.CSS_SELECTOR, '.mini-button')
     enablebutton = (By.CSS_SELECTOR, ".action-enable")
     confirmbutton = (By.CSS_SELECTOR, ".submit")
+    statustext = (By.CLASS_NAME, "status-text")
     recipesbreadcrumb = (By.CSS_SELECTOR, '.breadcrumbs > span:nth-child(1) > a:nth-child(1)')

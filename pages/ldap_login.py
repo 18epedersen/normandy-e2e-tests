@@ -21,8 +21,6 @@ class LDAPLogin(Base):
         self.find_element(*self.LOCATORS.username).send_keys(username)
         self.find_element(*self.LOCATORS.password).send_keys(password)
         self.find_element(*self.LOCATORS.submit).click()
-        print("self.selenium", self.selenium)
-        print("self.base_url", self.base_url)
         duo_page = DuoLogin(self.selenium, self.base_url)
         # return DuoLogin(self.selenium, self.base_url).wait_for_page_to_load()
         return duo_page.wait_for_page_to_load()

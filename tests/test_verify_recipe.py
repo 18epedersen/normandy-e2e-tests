@@ -3,10 +3,10 @@ import pytest
 from pages.ldap_login import LDAPLogin
 
 
-# test to successfully approval a recipe
 @pytest.mark.nondestructive
-def test_approve_recipe(conf, base_url, selenium):
-    """Test the approval flow of a recipe."""
+def test_verify_recipe(conf, base_url, selenium):
+    """Find recipe on home page."""
+    # test to successfully find a recipe in a table, use regions
     # base_url = conf.get('stage', 'base_url')
     username = conf.get('variables', 'username')
     password = conf.get('variables', 'password')
@@ -18,7 +18,9 @@ def test_approve_recipe(conf, base_url, selenium):
     additional_filters = conf.get('variables', 'additional_filters')
     action = conf.get('variables', 'action')
     message = conf.get('variables', 'message')
-    recipe_page.save_recipe(additional_filters, action, message)
+    recipe_page, recipe_id = recipe_page.save_recipe(additional_filters, action, message)
     approve_message = conf.get('variables', 'approve')
     home_page, approve_text = recipe_page.approve_recipe(approve_message)
-    assert approve_text == "APPROVED\nLATEST DRAFT"
+    home_page.verify_recipe(recipe_id)
+    # want to assert that the row is what i expect it to be from approval
+    assert 

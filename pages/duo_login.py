@@ -24,7 +24,7 @@ class DuoLogin(Base):
         QR_code = generate_QR_code(secret)
         self.selenium.switch_to_frame(
          self.find_element(*self.LOCATORS.duoiframe))
-        time.sleep(10)
+        time.sleep(5)
         select = Select(self.find_element(*self.LOCATORS.dropdown))
         select.select_by_value(self.LOCATORS.value)
         self.find_element(*self.LOCATORS.passcodebutton).click()
