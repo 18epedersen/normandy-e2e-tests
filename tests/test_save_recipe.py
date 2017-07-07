@@ -19,5 +19,4 @@ def test_save_recipe(conf, base_url, selenium):
     message = conf.get('variables', 'message')
     recipe_page.save_recipe(additional_filters,
                             action, message)
-    # or check that we get a flash of successfully added recipe
     assert recipe_page.find_element(*recipe_page.LOCATORS.requestbutton).is_displayed()

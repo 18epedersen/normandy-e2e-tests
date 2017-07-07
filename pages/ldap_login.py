@@ -24,3 +24,9 @@ class LDAPLogin(Base):
         duo_page = DuoLogin(self.selenium, self.base_url)
         # return DuoLogin(self.selenium, self.base_url).wait_for_page_to_load()
         return duo_page.wait_for_page_to_load()
+
+    def login_handler(self, conf, selenium, base_url):
+        username = conf.get('variables', 'username')
+        password = conf.get('variables', 'password')
+        self.open()
+        return self.login(username, password)

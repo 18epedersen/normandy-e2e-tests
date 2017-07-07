@@ -25,13 +25,14 @@ class Recipe(Base):
     def save_recipe(self, filter_message, action, action_message):
         """Save recipe with a unique UID."""
         recipe_id = uuid.uuid1().hex
-        time.sleep(5)
+        time.sleep(10)
         self.find_element(*self.LOCATORS.name).send_keys(recipe_id)
         self.find_element(*self.LOCATORS.filtertextbox).send_keys(filter_message)
-        time.sleep(5)
+        time.sleep(10)
         select = Select(self.find_element(*self.LOCATORS.action))
         select.select_by_value(action)
         self.find_element(*self.LOCATORS.actionmessage).send_keys(action_message)
+        time.sleep(10)
         self.find_element(*self.LOCATORS.save).click()
         return Recipe(self.selenium, self.base_url).wait_for_request_button(), recipe_id
 
@@ -50,5 +51,8 @@ class Recipe(Base):
         time.sleep(15)
         approve_text = self.find_element(*self.LOCATORS.statustext).text
         self.find_element(*self.LOCATORS.recipesbreadcrumb).click()
-        #time.sleep(600)
+        # time.sleep(600)
         return Home(self.selenium, self.base_url).wait_for_page_to_load(), approve_text
+
+    def edit_recipe(self):
+        pass
