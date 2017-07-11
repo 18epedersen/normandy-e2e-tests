@@ -1,3 +1,4 @@
+"""By method."""
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages.duo_login import DuoLogin
@@ -12,7 +13,6 @@ class LDAPLogin(Base):
 
     def wait_for_page_to_load(self):
         """Wait for page load method for submit."""
-        # self.wait.until(EC.visibility_of_element_located(self.submit_locator))
         self.wait.until(EC.visibility_of_element_located(self.LOCATORS.submit))
         return self
 
@@ -22,11 +22,11 @@ class LDAPLogin(Base):
         self.find_element(*self.LOCATORS.password).send_keys(password)
         self.find_element(*self.LOCATORS.submit).click()
         duo_page = DuoLogin(self.selenium, self.base_url)
-        # return DuoLogin(self.selenium, self.base_url).wait_for_page_to_load()
         return duo_page.wait_for_page_to_load()
 
     def login_handler(self, conf, selenium, base_url):
-        username = conf.get('variables', 'username')
-        password = conf.get('variables', 'password')
+        """Login handler."""
+        username = conf.get('login', 'username')
+        password = conf.get('login', 'password')
         self.open()
         return self.login(username, password)

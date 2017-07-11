@@ -8,3 +8,4 @@ variables.json
 assets
 config.ini
 *.pyc
+.recipe_name

@@ -28,12 +28,13 @@ class DuoLogin(Base):
         select = Select(self.find_element(*self.LOCATORS.dropdown))
         select.select_by_value(self.LOCATORS.value)
         self.find_element(*self.LOCATORS.passcodebutton).click()
-        # QR_code = generate_QR_code(secret)
+        QR_code = generate_QR_code(secret)
         self.find_element(*self.LOCATORS.QRinput).send_keys(QR_code)
         self.find_element(*self.LOCATORS.loginbutton).click()
         self.selenium.switch_to_default_content()
-        return Home(self.selenium, self.base_url, 30).wait_for_page_to_load()
+        return Home(self.selenium, self.base_url, 10).wait_for_page_to_load()
 
     def login_duo_handler(self, conf, selenium, base_url):
-        secret = conf.get('variables', 'secret')
+        """Login duo handler."""
+        secret = conf.get('login', 'secret')
         return self.login_duo(secret)

@@ -1,3 +1,4 @@
+"""Pytest."""
 import pytest
 import configparser
 import pyotp
@@ -26,19 +27,15 @@ def generate_QR_code(secret):
     return totp.now()
 
 
-def find_approved_recipe(conf, recipe_id):
-    """Find the recipe given the recipe_id."""
+def find_recipe_rest_api(conf):
+    """Find the recipe at the rest api server given the recipe_id."""
+    recipe_id = conf.get('variables', 'recipe_id')
     rest_api_url = conf.get('stage', 'rest_api_url')
     response = requests.get(rest_api_url)
     json_data = json.loads(response.text)
-    enabled, approved, action, message, filter_expression = None, None, None,
-    None, None
+    found = False
     for data in json_data:
         recipe = data['recipe']
         if recipe['name'] == recipe_id:
-            enabled = recipe['enabled']
-            approved = recipe['is_approved']
-            action = recipe['action']
-            message = recipe['arguments']['message']
-            filter_expression = recipe['filter_expression']
-    return (enabled, approved, action, message, filter_expression)
+            found = True
+    return found

@@ -4,14 +4,10 @@ from pages.ldap_login import LDAPLogin
 
 
 @pytest.mark.nondestructive
-def test_add_recipe(conf, base_url, selenium, ldap_duo_setup):
-    """Test creating a recipe and successfully submitting it."""
-    username = conf.get('variables', 'username')
-    password = conf.get('variables', 'password')
-    ldap_page = LDAPLogin(selenium, base_url).open()
-    duo_page = ldap_page.login(username, password)
-    secret = conf.get('variables', 'secret')
-    home_page = duo_page.login_duo(secret)
+def test_add_recipe(conf, base_url, selenium):
+    """Test adding a recipe."""
+    LDAP = LDAPLogin(selenium, base_url)
+    duo_page = LDAP.login_handler(conf, selenium, base_url)
+    home_page = duo_page.login_duo_handler(conf, selenium, base_url)
     recipe_page = home_page.add_recipe()
-
     assert recipe_page.heading_two == "RecipesAdd New"
