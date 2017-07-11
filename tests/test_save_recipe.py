@@ -3,6 +3,8 @@ import pytest
 from pages.ldap_login import LDAPLogin
 
 
+@pytest.mark.run(before='test_approve_recipe')
+@pytest.mark.run(after='test_add_recipe')
 @pytest.mark.nondestructive
 def test_save_recipe(conf, base_url, selenium):
     """Test creating a recipe and successfully submitting it."""

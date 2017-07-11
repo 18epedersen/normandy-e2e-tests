@@ -2,9 +2,9 @@
 import pytest
 from pages.ldap_login import LDAPLogin
 from tests.conftest import find_recipe_rest_api
-# from selenium.webdriver.support import expected_conditions as EC
 
 
+@pytest.mark.run(after='test_edit_recipe')
 @pytest.mark.nondestructive
 def test_delete_recipe(conf, base_url, selenium):
     """Confirm recipe deleted on home page."""
@@ -18,6 +18,7 @@ def test_delete_recipe(conf, base_url, selenium):
     assert text == 'Recipe deleted.'
 
 
+@pytest.mark.run(after='test_delete_recipe')
 @pytest.mark.nondestructive
 def test_deleted_recipe_at_rest_api(conf):
     """Testing that the deleted recipe is not at the rest api endpoint."""

@@ -3,7 +3,8 @@ import pytest
 from pages.ldap_login import LDAPLogin
 
 
-# test to successfully approval a recipe
+@pytest.mark.run(before='test_find_recipe')
+@pytest.mark.run(after='test_save_recipe')
 @pytest.mark.nondestructive
 def test_approve_recipe(conf, base_url, selenium):
     """Test the approval flow of a recipe."""
