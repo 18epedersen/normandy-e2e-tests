@@ -29,13 +29,14 @@ def generate_QR_code(secret):
 
 def find_recipe_rest_api(conf):
     """Find the recipe at the rest api server given the recipe_id."""
-    recipe_id = conf.get('variables', 'recipe_id')
+    with open('.recipe_name') as f:
+        recipe_name = f.read()
     rest_api_url = conf.get('stage', 'rest_api_url')
     response = requests.get(rest_api_url)
     json_data = json.loads(response.text)
     found = False
     for data in json_data:
         recipe = data['recipe']
-        if recipe['name'] == recipe_id:
+        if recipe['name'] == recipe_name:
             found = True
     return found

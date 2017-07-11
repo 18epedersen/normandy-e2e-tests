@@ -11,3 +11,4 @@ def test_add_recipe(conf, base_url, selenium):
     home_page = duo_page.login_duo_handler(conf, selenium, base_url)
     recipe_page = home_page.add_recipe()
     assert recipe_page.heading_two == "RecipesAdd New"
+    assert recipe_page.find_element(*recipe_page.LOCATORS.save).is_displayed()

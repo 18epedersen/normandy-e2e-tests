@@ -24,6 +24,11 @@ class Recipe(Base):
         self.wait.until(EC.visibility_of_element_located(self.LOCATORS.requestbutton)) # noqa
         return self
 
+    def wait_for_save_draft_button(self):
+        """Wait for request button to show."""
+        self.wait.until(EC.visibility_of_element_located(self.LOCATORS.savedraft)) # noqa
+        return self
+
     def save_recipe(self, conf, recipe_additional_filters, recipe_action):
         """Save recipe with a unique UID."""
         recipe_name = str(uuid.uuid1().hex)
@@ -36,7 +41,7 @@ class Recipe(Base):
         self.action_configuration(conf, recipe_action)
         time.sleep(15)
         self.find_element(*self.LOCATORS.save).click()
-        return Recipe(self.selenium, self.base_url).wait_for_request_button()
+        return Recipe(self.selenium, self.base_url, 40).wait_for_request_button() # noqa
 
     def save_recipe_handler(self, conf):
         """Save recipe handler."""
@@ -69,12 +74,14 @@ class Recipe(Base):
 
     def edit_recipe(self, conf, recipe_new_filter_message, recipe_new_action):
         """Edit recipe."""
+        time.sleep(10)
+        self.find_element(*self.LOCATORS.filtertextbox).clear()
         self.find_element(*self.LOCATORS.filtertextbox).send_keys(recipe_new_filter_message) # noqa
         time.sleep(10)
         self.action_configuration(conf, recipe_new_action)
         time.sleep(15)
         self.find_element(*self.LOCATORS.savedraft).click()
-        return Recipe(self.selenium, self.base_url).wait_for_page_to_load
+        self.approve_recipe_handler(conf)
 
     def edit_recipe_handler(self, conf):
         """Edit recipe handler."""
@@ -95,7 +102,7 @@ class Recipe(Base):
             recipe_thanks_message = conf.get('recipe', 'recipe_thanks_message')
             recipe_post_url = conf.get('recipe', 'recipe_post_url')
             recipe_learn_more = conf.get('recipe', 'recipe_learn_more')
-            recipe_learn_more_url = conf.get('recipe', 'learn_more_url')
+            recipe_learn_more_url = conf.get('recipe', 'recipe_learn_more_url')
             self.find_element(*self.LOCATORS.surveyid).send_keys(recipe_survey_id) # noqa
             self.find_element(*self.LOCATORS.actionmessage).send_keys(action_message) # noqa
             self.find_element(*self.LOCATORS.thanksmessage).send_keys(recipe_thanks_message) # noqa
@@ -111,3 +118,9 @@ class Recipe(Base):
         self.find_element(*self.LOCATORS.confirmdelete).click()
         time.sleep(10)
         return Home(self.selenium, self.base_url).wait_for_page_to_load()
+
+    def find_recipe_helper(self):
+        """Return which action was selected on the recipe page."""
+        select = Select(self.find_element(*self.LOCATORS.action))
+        value = select.first_selected_option.get_attribute('value')
+        return value

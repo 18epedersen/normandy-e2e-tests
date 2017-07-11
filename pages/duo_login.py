@@ -32,7 +32,7 @@ class DuoLogin(Base):
         self.find_element(*self.LOCATORS.QRinput).send_keys(QR_code)
         self.find_element(*self.LOCATORS.loginbutton).click()
         self.selenium.switch_to_default_content()
-        return Home(self.selenium, self.base_url, 10).wait_for_page_to_load()
+        return Home(self.selenium, self.base_url, 40).wait_for_page_to_load()
 
     def login_duo_handler(self, conf, selenium, base_url):
         """Login duo handler."""

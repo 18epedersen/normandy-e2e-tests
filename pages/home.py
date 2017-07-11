@@ -6,7 +6,7 @@ import time
 
 
 class Home(Base):
-    """Class for Normandy Control UI Home."""
+    """Home Class for Normandy Control UI."""
 
     LOCATORS = locators.Home
 
@@ -24,8 +24,11 @@ class Home(Base):
 
     def find_recipe_in_table(self, conf):
         """Find Recipe in home page recipe table."""
+        from pages.recipe import Recipe
         with open('.recipe_name') as f:
             recipe_name = f.read()
+        print("recipename is ", recipe_name)
+        recipe_page = None
         recipe_table = self.find_element(*self.LOCATORS.recipetable)
         tbody = recipe_table.find_element(*self.LOCATORS.tbody)
         time.sleep(5)
@@ -37,7 +40,15 @@ class Home(Base):
                 if col.text == recipe_name:
                     found = True
                     col.click()
+                    recipe_page = Recipe(self.selenium, self.base_url,
+                                         20).wait_for_save_draft_button()
                     break
             if found:
                 break
-        return found
+        return found, recipe_page
+
+    def confirm_deleted_recipe(self):
+        """Return text that recipe was successfully deleted."""
+        notif = self.find_element(*self.LOCATORS.notif)
+        success = notif.find_element(*self.LOCATORS.successalert)
+        return success.text

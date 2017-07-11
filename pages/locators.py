@@ -40,7 +40,8 @@ class Home(Base):
     tr = (By.TAG_NAME, 'tr')
     td = (By.TAG_NAME, 'td')
     tbody = (By.TAG_NAME, 'tbody')
-    successalert = (By.CLASS_NAME, 'message success')
+    successalert = (By.CLASS_NAME, 'message')
+    notif = (By.CLASS_NAME, 'notifications')
 
 
 class Recipe(Base):
