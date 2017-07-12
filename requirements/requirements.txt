@@ -7,4 +7,4 @@ pytest-html
 pyotp==2.2.6
 PyPOM==1.1.1
 tox
-pytest-ordering
+pytest-xdist

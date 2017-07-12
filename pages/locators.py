@@ -71,3 +71,4 @@ class Recipe(Base):
     successalert = (By.CLASS_NAME, 'message success')
     deletebutton = (By.CLASS_NAME, 'action-delete')
     confirmdelete = (By.CLASS_NAME, 'delete')
+    disablebutton = (By.CLASS_NAME, 'action-disable')

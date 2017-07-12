@@ -2,6 +2,7 @@
 import pytest
 from pages.ldap_login import LDAPLogin
 from tests.conftest import find_recipe_rest_api
+from tests.conftest import create_recipe
 
 
 @pytest.mark.run(before='test_edit_recipe')
@@ -12,6 +13,7 @@ def test_find_recipe_in_table(conf, base_url, selenium):
     LDAP = LDAPLogin(selenium, base_url)
     duo_page = LDAP.login_handler(conf, selenium, base_url)
     home_page = duo_page.login_duo_handler(conf, selenium, base_url)
+    home_page, approve_text = create_recipe(conf, home_page, False)
     result, recipe_page = home_page.find_recipe_in_table(conf)
     recipe_additional_filters = conf.get('recipe', 'recipe_additional_filters')
     recipe_action = conf.get('recipe', 'recipe_action')

@@ -19,6 +19,7 @@ class Home(Base):
     def add_recipe(self):
         """Click add button to create recipe."""
         from pages.recipe import Recipe
+        print("entered add recipe")
         self.find_element(*self.LOCATORS.addbutton).click()
         return Recipe(self.selenium, self.base_url).wait_for_page_to_load()
 
@@ -27,7 +28,6 @@ class Home(Base):
         from pages.recipe import Recipe
         with open('.recipe_name') as f:
             recipe_name = f.read()
-        print("recipename is ", recipe_name)
         recipe_page = None
         recipe_table = self.find_element(*self.LOCATORS.recipetable)
         tbody = recipe_table.find_element(*self.LOCATORS.tbody)
@@ -45,6 +45,8 @@ class Home(Base):
                     break
             if found:
                 break
+        print("found ", found)
+        print("recipe page ", recipe_page)
         return found, recipe_page
 
     def confirm_deleted_recipe(self):

@@ -40,3 +40,10 @@ def find_recipe_rest_api(conf):
         if recipe['name'] == recipe_name:
             found = True
     return found
+
+
+def create_recipe(conf, home_page, enabled):
+    """Create a recipe."""
+    recipe_page = home_page.add_recipe()
+    recipe_page.save_recipe_handler(conf)
+    return recipe_page.approve_recipe_handler(conf, enabled)
