@@ -13,7 +13,7 @@ class Home(Base):
     def wait_for_page_to_load(self):
         """Wait for page to load."""
         self.wait.until(EC.visibility_of_element_located(
-           self.LOCATORS.addbutton))
+           self.LOCATORS.recipetable))
         return self
 
     def add_recipe(self):

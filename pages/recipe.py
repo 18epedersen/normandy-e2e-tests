@@ -11,7 +11,6 @@ class Recipe(Base):
     """Recipe class."""
 
     LOCATORS = locators.Recipe
-    RECIPE = 'recipe'
 
     def wait_for_page_to_load(self):
         """Wait for page load method for submit."""
@@ -35,14 +34,16 @@ class Recipe(Base):
         recipe_name = str(uuid.uuid1().hex)
         with open('.recipe_name', 'w') as f:
             f.write(recipe_name)
-        time.sleep(10)
-        self.find_element(*self.LOCATORS.name).send_keys(recipe_name)
-        self.find_element(*self.LOCATORS.filtertextbox).send_keys(recipe_additional_filters) # noqa
-        time.sleep(10)
+        name_field = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.name))
+        name_field.send_keys(recipe_name)
+        self.find_element(*self.LOCATORS.filtertextbox).send_keys(
+          recipe_additional_filters)
         self.action_configuration(conf, recipe_action)
-        time.sleep(15)
-        self.find_element(*self.LOCATORS.save).click()
-        return Recipe(self.selenium, self.base_url, 60).wait_for_request_button() # noqa
+        save_new_recipe_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.save))
+        save_new_recipe_button.click()
+        return Recipe(self.selenium, self.base_url).wait_for_request_button()
 
     def save_recipe_handler(self, conf):
         """Save recipe handler."""
@@ -52,49 +53,45 @@ class Recipe(Base):
         recipe_action = conf.get('recipe', 'recipe_action')
         self.save_recipe(conf, recipe_additional_filters, recipe_action)
 
-    def approve_recipe(self, recipe_approve_message, enabled):
+    def approve_recipe(self, recipe_approve_message, recipe_enabled):
         """Approve recipe."""
         from pages.home import Home
-        time.sleep(30)
         print("entered approve recipe")
-        self.find_element(*self.LOCATORS.requestbutton).click()
-        time.sleep(10)
-        self.find_element(*self.LOCATORS.approvebutton).click()
+        request_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.requestbutton))
+        request_button.click()
+        approve_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.approvebutton))
+        approve_button.click()
         self.find_element(*self.LOCATORS.approvemessagetextbox).send_keys(
          recipe_approve_message)
-        time.sleep(5)
-        element = self.find_element(*self.LOCATORS.approvemessagebutton)
-        if element.is_enabled():
-            print("approve message button should be clicked")
-            element.click()
-            time.sleep(50)
-        else:
-            print("approve message button not enabled")
-        # self.find_element(*self.LOCATORS.approvemessagebutton).click()
-        if enabled:
+        approve_message_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.approvemessagebutton))
+        approve_message_button.click()
+        if recipe_enabled:
             print("recipe is enabled")
             self.find_element(*self.LOCATORS.recipesbreadcrumb).click()
         else:
             print("in recipe.py recipe is not enabled")
-            time.sleep(5)
-            self.find_element(*self.LOCATORS.enablebutton).click()
+            enable_button = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.enablebutton))
+            enable_button.click()
+            confirm_button = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.confirmbutton))
+            confirm_button.click()
+            approve_text = self.wait.until(EC.visibility_of_element_located(
+              self.LOCATORS.statustext)).text
+            recipes_breadcrumb = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.recipesbreadcrumb))
+            recipes_breadcrumb.click()
             time.sleep(10)
-            element = self.find_element(*self.LOCATORS.confirmbutton)
-            time.sleep(5)
-            if element.is_enabled():
-                print("confirm button is enabled")
-                element.click()
-            else:
-                print("confirm is not enabled")
-            time.sleep(15)
-            approve_text = self.find_element(*self.LOCATORS.statustext).text
-            self.find_element(*self.LOCATORS.recipesbreadcrumb).click()
+            # self.find_element(*self.LOCATORS.recipesbreadcrumb).click()
         return Home(self.selenium, self.base_url).wait_for_page_to_load(), approve_text # noqa
 
-    def approve_recipe_handler(self, conf, enabled):
+    def approve_recipe_handler(self, conf, recipe_enabled):
         """Approve recipe handler."""
         recipe_approve_message = conf.get('recipe', 'recipe_approve')
-        return self.approve_recipe(recipe_approve_message, enabled)
+        return self.approve_recipe(recipe_approve_message, recipe_enabled)
 
     def edit_recipe(self, conf, recipe_new_filter_message, recipe_new_action,
                     enabled):
@@ -119,7 +116,9 @@ class Recipe(Base):
     def action_configuration(self, conf, recipe_action):
         """Configure action for recipe."""
         print("entered action configuration")
-        select = Select(self.find_element(*self.LOCATORS.action))
+        action_dropdown = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.action))
+        select = Select(action_dropdown)
         select.select_by_value(recipe_action)
         action_message = conf.get('recipe', 'recipe_message')
         if recipe_action == 'console-log':

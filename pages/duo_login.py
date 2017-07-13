@@ -5,7 +5,6 @@ from pages.base import Base
 from pages.home import Home
 from tests.conftest import generate_QR_code
 from pages import locators
-import time
 
 
 class DuoLogin(Base):
@@ -24,15 +23,16 @@ class DuoLogin(Base):
         QR_code = generate_QR_code(secret)
         self.selenium.switch_to_frame(
          self.find_element(*self.LOCATORS.duoiframe))
-        time.sleep(5)
-        select = Select(self.find_element(*self.LOCATORS.dropdown))
+        dropdown_element = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.dropdown))
+        select = Select(dropdown_element)
         select.select_by_value(self.LOCATORS.value)
         self.find_element(*self.LOCATORS.passcodebutton).click()
         QR_code = generate_QR_code(secret)
         self.find_element(*self.LOCATORS.QRinput).send_keys(QR_code)
         self.find_element(*self.LOCATORS.loginbutton).click()
         self.selenium.switch_to_default_content()
-        return Home(self.selenium, self.base_url, 40).wait_for_page_to_load()
+        return Home(self.selenium, self.base_url, 60).wait_for_page_to_load()
 
     def login_duo_handler(self, conf, selenium, base_url):
         """Login duo handler."""
