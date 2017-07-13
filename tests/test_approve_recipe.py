@@ -12,4 +12,5 @@ def test_approve_recipe(conf, base_url, selenium):
     home_page = duo_page.login_duo_handler(conf, selenium, base_url)
     home_page, approve_text = create_recipe(conf, home_page, False)
     assert approve_text == "APPROVED\nLATEST DRAFT"
-    assert home_page.find_element(*home_page.LOCATORS.recipetable).is_displayed() # noqa
+    assert home_page.find_element(
+     *home_page.LOCATORS.recipetable).is_displayed()

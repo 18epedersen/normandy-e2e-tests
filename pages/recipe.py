@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import Select
 from pages import locators
 import uuid
 import time
+import expected
 
 
 class Recipe(Base):
@@ -81,10 +82,19 @@ class Recipe(Base):
             confirm_button.click()
             approve_text = self.wait.until(EC.visibility_of_element_located(
               self.LOCATORS.statustext)).text
-            recipes_breadcrumb = self.wait.until(EC.element_to_be_clickable(
-              self.LOCATORS.recipesbreadcrumb))
-            recipes_breadcrumb.click()
-            time.sleep(10)
+            self.wait.until(expected.alert_not_present())
+            recipes_breadcrumb = self.find_element(
+             *self.LOCATORS.recipesbreadcrumb)
+            if recipes_breadcrumb.is_enabled():
+                print("should click")
+                recipes_breadcrumb.click()
+                time.sleep(20)
+            else:
+                print("can't click")
+            # recipes_breadcrumb = self.wait.until(EC.visibility_of_element_located(
+            #   self.LOCATORS.recipesbreadcrumb))
+            # recipes_breadcrumb.click()
+            # time.sleep(10)
             # self.find_element(*self.LOCATORS.recipesbreadcrumb).click()
         return Home(self.selenium, self.base_url).wait_for_page_to_load(), approve_text # noqa
 
