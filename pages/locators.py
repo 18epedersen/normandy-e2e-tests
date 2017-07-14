@@ -5,9 +5,10 @@ from selenium.webdriver.common.by import By
 class Base:
     """Locators for Base."""
 
-    error = ()
     heading = (By.TAG_NAME, "h1")
     heading_two = (By.TAG_NAME, "h2")
+    notif = (By.CLASS_NAME, 'notifications')
+    messagealert = (By.CLASS_NAME, 'message')
 
 
 class LDAPLogin(Base):
@@ -36,10 +37,8 @@ class Home(Base):
     """Locators for Home."""
 
     addbutton = (By.CSS_SELECTOR, '.button')
-    notif = (By.CLASS_NAME, 'notifications')
     recipetable = (By.CLASS_NAME, 'recipe-list')
     tbody = (By.TAG_NAME, 'tbody')
-    successalert = (By.CLASS_NAME, 'message')
     td = (By.TAG_NAME, 'td')
     tr = (By.TAG_NAME, 'tr')
 
@@ -58,18 +57,21 @@ class Recipe(Base):
     deletebutton = (By.CLASS_NAME, 'action-delete')
     disablebutton = (By.CLASS_NAME, 'action-disable')
     enablebutton = (By.CSS_SELECTOR, ".action-enable")
-
+    experimentdocurl = (By.NAME, 'arguments.experimentDocumentUrl')
     filtertextbox = (By.NAME, 'extra_filter_expression')
     learnmore = (By.NAME, 'arguments.learnMoreMessage')
     learnmoreurl = (By.NAME, 'arguments.learnMoreUrl')
     name = (By.NAME, 'name')
     postanswerurl = (By.NAME, 'arguments.postAnswerUrl')
+    preferencebranch = (By.NAME, 'arguments.preferenceBranchType')
+    preferencename = (By.NAME, 'arguments.preferenceName')
+    preferencetype = (By.NAME, 'arguments.preferenceType')
     recipesbreadcrumb = (By.CSS_SELECTOR,
                          '.breadcrumbs > span:nth-child(1) > a:nth-child(1)')
     requestbutton = (By.CLASS_NAME, 'action-request')
     save = (By.CLASS_NAME, 'action-new')
     savedraft = (By.CLASS_NAME, 'action-save')
+    slug = (By.NAME, 'arguments.slug')
     statustext = (By.CLASS_NAME, "status-text")
-    successalert = (By.CLASS_NAME, 'message success')
     surveyid = (By.NAME, 'arguments.surveyId')
     thanksmessage = (By.NAME, 'arguments.thanksMessage')

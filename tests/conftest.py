@@ -28,7 +28,7 @@ def generate_QR_code(secret):
 
 
 def find_recipe_rest_api(conf, recipe_name):
-    """Find the recipe at the rest api server given the recipe_id."""
+    """Find the recipe at the rest api server given the recipe_name."""
     rest_api_url = conf.get('stage', 'rest_api_url')
     response = requests.get(rest_api_url)
     json_data = json.loads(response.text)
@@ -38,10 +38,3 @@ def find_recipe_rest_api(conf, recipe_name):
         if recipe['name'] == recipe_name:
             found = True
     return found
-
-
-# def create_recipe(conf, home_page, enabled):
-#     """Create a recipe."""
-#     recipe_page = home_page.add_recipe()
-#     recipe_page, recipe_name = recipe_page.save_recipe_handler(conf)
-#     return recipe_page.approve_recipe_handler(conf, enabled), recipe_name

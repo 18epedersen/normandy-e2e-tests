@@ -1,11 +1,20 @@
 [stage]
-base_url = https://normandy-admin.stage.mozaws.net/control/recipe/
+rest_api_url = https://normandy.stage.mozaws.net/api/v1/recipe/signed/?enabled=1
 
-[variables]
+[login]
 username =
 password =
 secret =
-additional_filters = true
-action = console-log
-message = testing message
-approve = approved!
+
+[recipe]
+recipe_survey_id = Normandy-test
+recipe_additional_filters = true
+recipe_action = console-log
+recipe_message = testing message
+recipe_approve = approved!
+recipe_new_filter_message = false
+recipe_new_action = show-heartbeat
+recipe_thanks_message = Default thanks Message
+recipe_post_url = https://example.net
+recipe_learn_more = Default learn more
+recipe_learn_more_url = https://example.com

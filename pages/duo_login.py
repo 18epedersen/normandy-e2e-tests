@@ -18,9 +18,10 @@ class DuoLogin(Base):
           self.LOCATORS.a0notloggedin))
         return self
 
-    def login_duo(self, secret):
+    def duo_login(self, conf):
         """Log into duo."""
         # randomize waits by index of parallel process
+        secret = conf.get('login', 'secret')
         QR_code = generate_QR_code(secret)
         self.selenium.switch_to_frame(
          self.find_element(*self.LOCATORS.duoiframe))
@@ -28,14 +29,10 @@ class DuoLogin(Base):
           self.LOCATORS.dropdown))
         select = Select(dropdown_element)
         select.select_by_value(self.LOCATORS.value)
-        self.find_element(*self.LOCATORS.passcodebutton).click()
-        QR_code = generate_QR_code(secret)
+        passcode_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.passcodebutton))
+        passcode_button.click()
         self.find_element(*self.LOCATORS.QRinput).send_keys(QR_code)
         self.find_element(*self.LOCATORS.loginbutton).click()
         self.selenium.switch_to_default_content()
         return Home(self.selenium, self.base_url, 60).wait_for_page_to_load()
-
-    def login_duo_handler(self, conf, selenium, base_url):
-        """Login duo handler."""
-        secret = conf.get('login', 'secret')
-        return self.login_duo(secret)

@@ -1,6 +1,7 @@
 """Page object model."""
 from pypom import Page
 from pages import locators
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class Base(Page):
@@ -19,6 +20,14 @@ class Base(Page):
         return self.find_element(*self.LOCATORS.heading_two).text
 
     @property
-    def error(self):
-        """Error heading."""
-        return self.find_element(*self.LOCATORS.error).text
+    def get_notification_texts(self):
+        """Return notification text."""
+        notif = self.wait.until(EC.visibility_of_element_located(
+          self.LOCATORS.notif))
+        messages = notif.find_elements(*self.LOCATORS.messagealert)
+        notifications_text_list = []
+        for message in messages:
+            notifications_text_list.append(message.text)
+            print("message.text", message.text)
+        print('text list ', notifications_text_list)
+        return notifications_text_list

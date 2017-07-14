@@ -12,6 +12,14 @@ class Recipe(Base):
     """Recipe class."""
 
     LOCATORS = locators.Recipe
+    TIMEOUT = 60
+
+    @property
+    def get_action_selected(self):
+        """Return action selected on the recipe page."""
+        select = Select(self.find_element(*self.LOCATORS.action))
+        value = select.first_selected_option.get_attribute('value')
+        return value
 
     def wait_for_page_to_load(self):
         """Wait for page load method for submit."""
@@ -30,15 +38,25 @@ class Recipe(Base):
          self.LOCATORS.savedraft))
         return self
 
+    def wait_for_enable_button(self):
+        """Wait for enable button to show."""
+        self.wait.until(EC.visibility_of_element_located(
+         self.LOCATORS.enablebutton))
+        return self
+
+    def wait_for_disable_button(self):
+        """Wait for disable button to show."""
+        self.wait.until(EC.visibility_of_element_located(
+         self.LOCATORS.disablebutton))
+        return self
+
     def save_recipe(self, conf):
-        """Save recipe with a unique UID."""
+        """Save recipe with a unique UUID."""
         print("entered save recipe")
         recipe_additional_filters = conf.get('recipe',
                                              'recipe_additional_filters')
         recipe_action = conf.get('recipe', 'recipe_action')
         recipe_name = str(uuid.uuid1().hex)
-        # with open('.recipe_name', 'w') as f:
-        #     f.write(recipe_name)
         name_field = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.name))
         name_field.clear()
@@ -49,13 +67,25 @@ class Recipe(Base):
         save_new_recipe_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.save))
         save_new_recipe_button.click()
-        return Recipe(self.selenium,
-                      self.base_url).wait_for_request_button(), recipe_name
+        return Recipe(self.selenium, self.base_url,
+                      self.TIMEOUT).wait_for_request_button(), recipe_name
 
-    def approve_recipe(self, conf, recipe_enabled):
+    def approve_new_recipe(self, conf):
         """Approve recipe."""
-        from pages.home import Home
-        print("entered approve recipe")
+        print("entered approve new recipe")
+        self.approve_recipe_helper(conf)
+        return Recipe(self.selenium,
+                      self.base_url).wait_for_enable_button()
+
+    def approve_enabled_recipe(self, conf):
+        """Approve an existing enabled recipe."""
+        print("entered approved enabled recipe")
+        self.approve_recipe_helper(conf)
+        return Recipe(self.selenium, self.base_url, 60).wait_for_disable_button()
+
+    def approve_recipe_helper(self, conf):
+        """Approve recipe helper."""
+        print("entered approve recipe helper")
         recipe_approve_message = conf.get('recipe', 'recipe_approve')
         request_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.requestbutton))
@@ -68,32 +98,32 @@ class Recipe(Base):
         approve_message_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.approvemessagebutton))
         approve_message_button.click()
-        if recipe_enabled:
-            print("recipe is enabled")
-            time.sleep(10)
-            # fix what approve_text is and figure out what to remove time.sleep
-            approve_text = self.wait.until(EC.visibility_of_element_located(
-              self.LOCATORS.statustext)).text
-            self.find_element(*self.LOCATORS.recipesbreadcrumb).click()
-        else:
-            print("in recipe.py recipe is not enabled")
-            enable_button = self.wait.until(EC.element_to_be_clickable(
-              self.LOCATORS.enablebutton))
-            enable_button.click()
-            confirm_button = self.wait.until(EC.element_to_be_clickable(
-              self.LOCATORS.confirmbutton))
-            confirm_button.click()
-            approve_text = self.wait.until(EC.visibility_of_element_located(
-              self.LOCATORS.statustext)).text
-            # figure out how to write custom waits
-            # self.wait.until(expected.alert_not_present())
-            time.sleep(10)
-            recipes_breadcrumb = self.wait.until(EC.element_to_be_clickable(
-              self.LOCATORS.recipesbreadcrumb))
-            recipes_breadcrumb.click()
-        return Home(self.selenium, self.base_url).wait_for_page_to_load(), approve_text # noqa
+        time.sleep(5)
 
-    def edit_recipe(self, conf, enabled):
+    def enable_recipe(self):
+        """Enable a recipe."""
+        print("entered enable recipe")
+        enable_button = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.enablebutton))
+        enable_button.click()
+        confirm_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.confirmbutton))
+        confirm_button.click()
+        return Recipe(self.selenium, self.base_url,
+                      60).wait_for_disable_button()
+
+    def click_home_button(self):
+        """Return home object."""
+        from pages.home import Home
+        time.sleep(10)
+        self.wait.until(EC.invisibility_of_element_located(
+         self.LOCATORS.messagealert))
+        recipes_breadcrumb = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.recipesbreadcrumb))
+        recipes_breadcrumb.click()
+        return Home(self.selenium, self.base_url).wait_for_page_to_load()
+
+    def edit_enabled_recipe(self, conf):
         """Edit recipe."""
         recipe_new_filter_message = conf.get('recipe',
                                              'recipe_new_filter_message')
@@ -106,7 +136,7 @@ class Recipe(Base):
         save_draft_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.savedraft))
         save_draft_button.click()
-        self.approve_recipe(conf, enabled)
+        return self.approve_enabled_recipe(conf)
 
     def action_configuration(self, conf, recipe_action):
         """Configure action for recipe."""
@@ -137,23 +167,14 @@ class Recipe(Base):
             self.find_element(*self.LOCATORS.learnmore).send_keys(recipe_learn_more) # noqa
             self.find_element(*self.LOCATORS.learnmoreurl).clear()
             self.find_element(*self.LOCATORS.learnmoreurl).send_keys(recipe_learn_more_url) # noqa
+        if recipe_action == 'preference-experiment':
+            pass
 
     def delete_recipe(self):
         """Delete a recipe."""
         from pages.home import Home
-        # import os
         self.find_element(*self.LOCATORS.deletebutton).click()
         confirm_delete = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.confirmdelete))
         confirm_delete.click()
-        # f = open('.recipe_name')
-        # recipe_name = f.read()
-        # f.close()
-        # os.remove(f.name)
-        return Home(self.selenium, self.base_url).wait_for_page_to_load()
-
-    def which_action_selected(self):
-        """Return which action was selected on the recipe page."""
-        select = Select(self.find_element(*self.LOCATORS.action))
-        value = select.first_selected_option.get_attribute('value')
-        return value
+        return Home(self.selenium, self.base_url, 30).wait_for_page_to_load()
