@@ -20,6 +20,7 @@ class DuoLogin(Base):
 
     def login_duo(self, secret):
         """Log into duo."""
+        # randomize waits by index of parallel process
         QR_code = generate_QR_code(secret)
         self.selenium.switch_to_frame(
          self.find_element(*self.LOCATORS.duoiframe))

@@ -2,7 +2,6 @@
 import pytest
 from pages.ldap_login import LDAPLogin
 from tests.conftest import find_recipe_rest_api
-from tests.conftest import create_recipe
 
 
 @pytest.mark.nondestructive
@@ -11,18 +10,16 @@ def test_delete_recipe(conf, base_url, selenium):
     LDAP = LDAPLogin(selenium, base_url)
     duo_page = LDAP.login_handler(conf, selenium, base_url)
     home_page = duo_page.login_duo_handler(conf, selenium, base_url)
-    recipe_page = create_recipe(conf, home_page, False)
-    found_sucess, recipe_page = home_page.find_recipe_in_table(conf)
+    home_page, approve_text, recipe_name = home_page.create_approved_recipe(
+     conf, False)
+    found_before_deleted_recipe, recipe_page = home_page.find_recipe_in_table(
+     recipe_name)
     home_page = recipe_page.delete_recipe()
-    text = home_page.confirm_deleted_recipe()
-    found_failure, recipe_page = home_page.find_recipe_in_table(conf)
-    assert found_sucess
-    assert text == 'Recipe deleted.'
-    assert not found_failure
-
-
-@pytest.mark.nondestructive
-def test_deleted_recipe_at_rest_api(conf):
-    """Testing that the deleted recipe is not at the rest api endpoint."""
-    found = find_recipe_rest_api(conf)
-    assert not found
+    notification_text = home_page.get_notification_text()
+    found_after_deleted_recipe, recipe_page = home_page.find_recipe_in_table(
+     recipe_name)
+    found_recipe_in_rest_api = find_recipe_rest_api(conf, recipe_name)
+    assert found_before_deleted_recipe
+    assert notification_text == 'Recipe deleted.'
+    assert not found_after_deleted_recipe
+    assert not found_recipe_in_rest_api

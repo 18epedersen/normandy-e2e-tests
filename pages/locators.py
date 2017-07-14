@@ -39,6 +39,7 @@ class Home(Base):
     notif = (By.CLASS_NAME, 'notifications')
     recipetable = (By.CLASS_NAME, 'recipe-list')
     tbody = (By.TAG_NAME, 'tbody')
+    successalert = (By.CLASS_NAME, 'message')
     td = (By.TAG_NAME, 'td')
     tr = (By.TAG_NAME, 'tr')
 
