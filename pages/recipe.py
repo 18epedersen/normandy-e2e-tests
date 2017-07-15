@@ -12,11 +12,10 @@ class Recipe(Base):
     """Recipe class."""
 
     LOCATORS = locators.Recipe
-    TIMEOUT = 60
 
     @property
     def get_action_selected(self):
-        """Return action selected on the recipe page."""
+        """Return action selected on recipe page."""
         select = Select(self.find_element(*self.LOCATORS.action))
         value = select.first_selected_option.get_attribute('value')
         return value
@@ -52,7 +51,6 @@ class Recipe(Base):
 
     def save_recipe(self, conf):
         """Save recipe with a unique UUID."""
-        print("entered save recipe")
         recipe_additional_filters = conf.get('recipe',
                                              'recipe_additional_filters')
         recipe_action = conf.get('recipe', 'recipe_action')
@@ -68,24 +66,22 @@ class Recipe(Base):
           self.LOCATORS.save))
         save_new_recipe_button.click()
         return Recipe(self.selenium, self.base_url,
-                      self.TIMEOUT).wait_for_request_button(), recipe_name
+                      60).wait_for_request_button(), recipe_name
 
     def approve_new_recipe(self, conf):
         """Approve recipe."""
-        print("entered approve new recipe")
         self.approve_recipe_helper(conf)
         return Recipe(self.selenium,
                       self.base_url).wait_for_enable_button()
 
     def approve_enabled_recipe(self, conf):
         """Approve an existing enabled recipe."""
-        print("entered approved enabled recipe")
         self.approve_recipe_helper(conf)
-        return Recipe(self.selenium, self.base_url, 60).wait_for_disable_button()
+        return Recipe(self.selenium, self.base_url,
+                      60).wait_for_disable_button()
 
     def approve_recipe_helper(self, conf):
         """Approve recipe helper."""
-        print("entered approve recipe helper")
         recipe_approve_message = conf.get('recipe', 'recipe_approve')
         request_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.requestbutton))
@@ -102,7 +98,6 @@ class Recipe(Base):
 
     def enable_recipe(self):
         """Enable a recipe."""
-        print("entered enable recipe")
         enable_button = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.enablebutton))
         enable_button.click()
@@ -140,7 +135,6 @@ class Recipe(Base):
 
     def action_configuration(self, conf, recipe_action):
         """Configure action for recipe."""
-        print("entered action configuration")
         action_dropdown = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.action))
         select = Select(action_dropdown)

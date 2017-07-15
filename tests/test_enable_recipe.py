@@ -13,9 +13,6 @@ def test_enable_recipe(conf, base_url, selenium):
     recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(
      conf)
     notification_text_list = recipe_page.get_notification_texts
-    assert 'Recipe saved.' in notification_text_list
-    assert 'Approval requested.' in notification_text_list
-    assert "Revision was approved." in notification_text_list
     assert "Recipe enabled." in notification_text_list
     assert recipe_page.find_element(
      *recipe_page.LOCATORS.disablebutton).is_displayed()

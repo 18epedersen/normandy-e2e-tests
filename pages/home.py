@@ -18,7 +18,6 @@ class Home(Base):
     def click_add_recipe(self):
         """Click add button to create recipe."""
         from pages.recipe import Recipe
-        print("entered add recipe")
         self.find_element(*self.LOCATORS.addbutton).click()
         return Recipe(self.selenium, self.base_url).wait_for_page_to_load()
 
@@ -40,8 +39,6 @@ class Home(Base):
     def find_recipe_in_table(self, recipe_name):
         """Find recipe name in home page recipe table."""
         from pages.recipe import Recipe
-        print("entered find recipe in table")
-        print("recipe_name", recipe_name)
         recipe_page = None
         rows = self.wait.until(EC.visibility_of_all_elements_located(
          self.LOCATORS.tr))

@@ -21,13 +21,11 @@ class Base(Page):
 
     @property
     def get_notification_texts(self):
-        """Return notification text."""
+        """Return list of notification texts."""
         notif = self.wait.until(EC.visibility_of_element_located(
           self.LOCATORS.notif))
         messages = notif.find_elements(*self.LOCATORS.messagealert)
         notifications_text_list = []
         for message in messages:
             notifications_text_list.append(message.text)
-            print("message.text", message.text)
-        print('text list ', notifications_text_list)
         return notifications_text_list

@@ -27,7 +27,7 @@ class LDAPLogin(Base):
         return DuoLogin(self.selenium, self.base_url).wait_for_page_to_load()
 
     def setup(self, conf):
-        """Return home page -- after loginning into ldap and duo."""
+        """Return home page after loginning into ldap and duo."""
         duo_page = self.ldap_login(conf)
         home_page = duo_page.duo_login(conf)
         return home_page
