@@ -40,6 +40,7 @@ class Home(Base):
         """Find recipe name in home page recipe table."""
         from pages.recipe import Recipe
         recipe_page = None
+        row_content = []
         rows = self.wait.until(EC.visibility_of_all_elements_located(
          self.LOCATORS.tr))
         found = False

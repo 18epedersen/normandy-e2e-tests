@@ -8,7 +8,7 @@ import time
 @pytest.mark.nondestructive
 def test_verify_col_names(conf, base_url, selenium):
     """Test disabling a recipe."""
-    time.sleep(160)
+    time.sleep(240)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
     recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(

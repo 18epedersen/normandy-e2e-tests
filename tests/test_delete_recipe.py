@@ -8,7 +8,7 @@ import time
 @pytest.mark.nondestructive
 def test_delete_recipe(conf, base_url, selenium):
     """Confirm recipe deleted on home page."""
-    time.sleep(40)
+    time.sleep(60)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
     recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(
@@ -17,8 +17,7 @@ def test_delete_recipe(conf, base_url, selenium):
     found_before_deleted_recipe, recipe_page, row_content = home_page.find_recipe_in_table(recipe_name) # noqa
     home_page = recipe_page.delete_recipe()
     notifications_text_list = home_page.get_notification_texts
-    found_after_deleted_recipe, recipe_page = home_page.find_recipe_in_table(
-     recipe_name)
+    found_after_deleted_recipe, recipe_page, row_content = home_page.find_recipe_in_table(recipe_name) # noqa
     found_recipe_in_rest_api = find_recipe_rest_api(conf, recipe_name)
     assert found_before_deleted_recipe
     assert 'Recipe deleted.' in notifications_text_list

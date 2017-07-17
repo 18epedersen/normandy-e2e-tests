@@ -8,7 +8,7 @@ import time
 def test_edit_recipe(conf, base_url, selenium):
     """Find recipe on home page, and edit recipe."""
     """Check recipe was correctly changed."""
-    time.sleep(80)
+    time.sleep(120)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
     recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(
@@ -18,7 +18,8 @@ def test_edit_recipe(conf, base_url, selenium):
      recipe_name)
     recipe_page = recipe_page.edit_enabled_recipe(conf)
     home_page = recipe_page.click_home_button()
-    found_recipe, recipe_page = home_page.find_recipe_in_table(recipe_name)
+    found_recipe, recipe_page, row_content = home_page.find_recipe_in_table(
+     recipe_name)
     action_selected = recipe_page.get_action_selected
     assert found_recipe
     assert recipe_page.find_element(*recipe_page.LOCATORS.surveyid).get_attribute('value') == conf.get('recipe', 'recipe_survey_id') # noqa

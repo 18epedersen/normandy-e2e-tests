@@ -7,7 +7,7 @@ import time
 @pytest.mark.nondestructive
 def test_save_recipe(conf, base_url, selenium):
     """Test creating a recipe and successfully submitting it."""
-    time.sleep(140)
+    time.sleep(210)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
     recipe_page = home_page.click_add_recipe()

@@ -8,12 +8,13 @@ import time
 @pytest.mark.nondestructive
 def test_find_recipe_in_table(conf, base_url, selenium):
     """Find recipe on home page."""
-    time.sleep(120)
+    time.sleep(180)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
-    recipe_page, recipe_name, row_content = home_page.create_approved_and_enabled_recipe(conf) # noqa
+    recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(conf) # noqa
     home_page = recipe_page.click_home_button()
-    found_recipe, recipe_page = home_page.find_recipe_in_table(recipe_name)
+    found_recipe, recipe_page, row_content = home_page.find_recipe_in_table(
+     recipe_name)
     action_selected = recipe_page.get_action_selected
     found_recipe_at_rest_api = find_recipe_rest_api(conf, recipe_name)
     assert found_recipe, "recipe name not found"
