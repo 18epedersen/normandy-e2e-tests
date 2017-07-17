@@ -49,7 +49,6 @@ class Home(Base):
                 if col.text == recipe_name:
                     found = True
                     row_content = self.get_row_content(row)
-                    print("names are ", row_content)
                     col.click()
                     recipe_page = Recipe(self.selenium, self.base_url,
                                          20).wait_for_save_draft_button()
@@ -60,9 +59,8 @@ class Home(Base):
 
     def get_row_content(self, row):
         """Get the names of the columns of the selected recipe."""
-        names = []
+        row_content_texts = []
         cols = row.find_elements(*self.LOCATORS.td)
         for col in cols:
-            print("col.text is ", col.text)
-            names.append(col.text)
-        return names
+            row_content_texts.append(col.text)
+        return row_content_texts
