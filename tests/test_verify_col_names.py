@@ -2,13 +2,13 @@
 import pytest
 from pages.ldap_login import LDAPLogin
 # from tests.conftest import find_recipe_rest_api
-# import time
+import time
 
 
 @pytest.mark.nondestructive
-def test_find_columns_in_table(conf, base_url, selenium):
+def test_verify_col_names(conf, base_url, selenium):
     """Test disabling a recipe."""
-    # time.sleep(120)
+    time.sleep(160)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
     recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(

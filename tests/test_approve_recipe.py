@@ -7,7 +7,7 @@ import time
 @pytest.mark.nondestructive
 def test_approve_recipe(conf, base_url, selenium):
     """Test the approval flow of creating a recipe."""
-    time.sleep(30)
+    time.sleep(20)
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf)
     recipe_page = home_page.create_approved_recipe(conf)
