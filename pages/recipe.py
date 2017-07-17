@@ -5,7 +5,6 @@ from selenium.webdriver.support.ui import Select
 from pages import locators
 import uuid
 import time
-# import expected
 
 
 class Recipe(Base):
@@ -94,7 +93,6 @@ class Recipe(Base):
         approve_message_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.approvemessagebutton))
         approve_message_button.click()
-        time.sleep(5)
 
     def enable_recipe(self):
         """Enable a recipe."""
@@ -107,12 +105,25 @@ class Recipe(Base):
         return Recipe(self.selenium, self.base_url,
                       60).wait_for_disable_button()
 
+    def disable_recipe(self):
+        """Disable a recipe."""
+        disable_button = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.disablebutton))
+        disable_button.click()
+        confirm_delete_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.confirmdelete))
+        confirm_delete_button.click()
+        return Recipe(self.selenium, self.base_url,
+                      60).wait_for_save_draft_button()
+
     def click_home_button(self):
         """Return home object."""
         from pages.home import Home
         time.sleep(10)
         self.wait.until(EC.invisibility_of_element_located(
          self.LOCATORS.messagealert))
+        # self.wait.until(not EC.presence_of_element_located(
+        #  self.LOCATORS.messagealert))
         recipes_breadcrumb = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.recipesbreadcrumb))
         recipes_breadcrumb.click()

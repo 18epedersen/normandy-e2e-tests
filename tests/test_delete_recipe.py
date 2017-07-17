@@ -14,7 +14,7 @@ def test_delete_recipe(conf, base_url, selenium):
     recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(
      conf)
     home_page = recipe_page.click_home_button()
-    found_before_deleted_recipe, recipe_page = home_page.find_recipe_in_table(
+    found_before_deleted_recipe, recipe_page, row_content = home_page.find_recipe_in_table(
      recipe_name)
     home_page = recipe_page.delete_recipe()
     notifications_text_list = home_page.get_notification_texts
