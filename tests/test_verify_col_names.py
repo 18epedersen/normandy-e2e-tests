@@ -1,17 +1,14 @@
 """Pytest."""
 import pytest
 from pages.ldap_login import LDAPLogin
-import time
 
 
 @pytest.mark.nondestructive
-def test_verify_col_names(conf, base_url, selenium):
-    """Test disabling a recipe."""
-    time.sleep(240)
+def test_verify_col_names(conf, base_url, selenium, qr_code):
+    """Test that column values of a recipe is correctly saved."""
     LDAP = LDAPLogin(selenium, base_url)
-    home_page = LDAP.setup(conf)
-    recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(
-     conf)
+    home_page = LDAP.setup(conf, qr_code)
+    recipe_page, recipe_name, messages_list = home_page.create_approved_and_enabled_recipe(conf) # noqa
     home_page = recipe_page.click_home_button()
     found_recipe, recipe_page, row_content = home_page.find_recipe_in_table(
      recipe_name)

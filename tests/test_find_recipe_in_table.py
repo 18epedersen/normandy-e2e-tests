@@ -2,16 +2,14 @@
 import pytest
 from pages.ldap_login import LDAPLogin
 from tests.conftest import find_recipe_rest_api
-import time
 
 
 @pytest.mark.nondestructive
-def test_find_recipe_in_table(conf, base_url, selenium):
+def test_find_recipe_in_table(conf, base_url, selenium, qr_code):
     """Find recipe on home page."""
-    time.sleep(180)
     LDAP = LDAPLogin(selenium, base_url)
-    home_page = LDAP.setup(conf)
-    recipe_page, recipe_name = home_page.create_approved_and_enabled_recipe(conf) # noqa
+    home_page = LDAP.setup(conf, qr_code)
+    recipe_page, recipe_name, messages_list = home_page.create_approved_and_enabled_recipe(conf) # noqa
     home_page = recipe_page.click_home_button()
     found_recipe, recipe_page, row_content = home_page.find_recipe_in_table(
      recipe_name)

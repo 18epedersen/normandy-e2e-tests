@@ -5,6 +5,7 @@ import pyotp
 import json
 import requests
 from foxpuppet import FoxPuppet
+import time
 
 
 @pytest.fixture
@@ -18,7 +19,6 @@ def conf():
 @pytest.fixture(scope="session")
 def base_url():
     """Return base url fixture."""
-    # return conf.get("stage", "base_url")
     return 'https://normandy-admin.stage.mozaws.net/control/recipe/'
 
 
@@ -34,8 +34,15 @@ def foxpuppet(selenium):
     return FoxPuppet(selenium)
 
 
-def generate_QR_code(secret):
-    """Return the QR code for 2FA."""
+@pytest.fixture
+def qr_code(conf, worker_id):
+    """Return qr code."""
+    secret = conf.get('login', 'secret')
+    if worker_id == 'master':
+        index = 0
+    else:
+        index = int(worker_id[2:])
+    time.sleep(index*30)
     totp = pyotp.TOTP(secret)
     return totp.now()
 

@@ -4,7 +4,6 @@ from pages.base import Base
 from selenium.webdriver.support.ui import Select
 from pages import locators
 import uuid
-import time
 
 
 class Recipe(Base):
@@ -20,7 +19,7 @@ class Recipe(Base):
         return value
 
     def wait_for_page_to_load(self):
-        """Wait for page load method for submit."""
+        """Wait for recipe page's submit button."""
         self.wait.until(EC.visibility_of_element_located(self.LOCATORS.save))
         return self
 
@@ -31,7 +30,7 @@ class Recipe(Base):
         return self
 
     def wait_for_save_draft_button(self):
-        """Wait for request button to show."""
+        """Wait for save draft button to show."""
         self.wait.until(EC.visibility_of_element_located(
          self.LOCATORS.save_draft))
         return self
@@ -50,6 +49,7 @@ class Recipe(Base):
 
     def save_recipe(self, conf):
         """Save recipe with a unique UUID."""
+        """Return a recipe page, recipe name, and notification's texts."""
         recipe_additional_filters = conf.get('recipe',
                                              'recipe_additional_filters')
         recipe_action = conf.get('recipe', 'recipe_action')
@@ -64,23 +64,39 @@ class Recipe(Base):
         save_new_recipe_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.save))
         save_new_recipe_button.click()
-        return Recipe(self.selenium, self.base_url,
-                      60).wait_for_request_button(), recipe_name
+        messages_list = self.message_alert_helper()
+        recipe_page = Recipe(self.selenium, self.base_url)
+        return recipe_page.wait_for_request_button(), recipe_name, messages_list
+
+    def message_alert_helper(self):
+        """Return a list of messages' texts from notifications."""
+        notif = self.wait.until(EC.visibility_of_element_located(
+          self.LOCATORS.notif))
+        messages = notif.find_elements(*self.LOCATORS.message_alert)
+        messages_list = []
+        for message in messages:
+            messages_list.append(message.text)
+        self.wait.until(EC.invisibility_of_element_located(
+         self.LOCATORS.message_alert))
+        return messages_list
 
     def approve_new_recipe(self, conf):
         """Approve recipe."""
-        self.approve_recipe_helper(conf)
-        return Recipe(self.selenium,
-                      self.base_url).wait_for_enable_button()
+        """Return recipe page and list of messages' texts from notifications"""
+        messages_list = self.approve_recipe_helper(conf)
+        recipe_page = Recipe(self.selenium, self.base_url)
+        return recipe_page.wait_for_enable_button(), messages_list
 
     def approve_enabled_recipe(self, conf):
         """Approve an existing enabled recipe."""
-        self.approve_recipe_helper(conf)
-        return Recipe(self.selenium, self.base_url,
-                      60).wait_for_disable_button()
+        """Return recipe page and list of messages' texts from notifications"""
+        messages_list = self.approve_recipe_helper(conf)
+        recipe_page = Recipe(self.selenium, self.base_url)
+        return recipe_page.wait_for_disable_button(), messages_list
 
     def approve_recipe_helper(self, conf):
         """Approve recipe helper."""
+        """Returns list of messages' texts from notifications."""
         recipe_approve_message = conf.get('recipe', 'recipe_approve')
         request_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.request_button))
@@ -93,37 +109,38 @@ class Recipe(Base):
         approve_message_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.approve_message_button))
         approve_message_button.click()
+        messages_list = self.message_alert_helper()
+        return messages_list
 
     def enable_recipe(self):
         """Enable a recipe."""
+        """Return recipe page, and messages' texts from notifications."""
         enable_button = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.enable_button))
         enable_button.click()
         confirm_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.confirm_button))
         confirm_button.click()
-        return Recipe(self.selenium, self.base_url,
-                      60).wait_for_disable_button()
+        messages_list = self.message_alert_helper()
+        recipe_page = Recipe(self.selenium, self.base_url)
+        return recipe_page.wait_for_disable_button(), messages_list
 
     def disable_recipe(self):
         """Disable a recipe."""
+        """Return recipe page, and messages' texts from notifications."""
         disable_button = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.disable_button))
         disable_button.click()
         confirm_delete_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.confirm_delete))
         confirm_delete_button.click()
-        return Recipe(self.selenium, self.base_url,
-                      60).wait_for_save_draft_button()
+        messages_list = self.message_alert_helper()
+        recipe_page = Recipe(self.selenium, self.base_url)
+        return recipe_page.wait_for_save_draft_button(), messages_list
 
     def click_home_button(self):
         """Return home object."""
         from pages.home import Home
-        time.sleep(10)
-        self.wait.until(EC.invisibility_of_element_located(
-         self.LOCATORS.message_alert))
-        # self.wait.until(not EC.presence_of_element_located(
-        #  self.LOCATORS.messagealert))
         recipes_breadcrumb = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.recipes_breadcrumb))
         recipes_breadcrumb.click()
@@ -131,6 +148,7 @@ class Recipe(Base):
 
     def edit_enabled_recipe(self, conf):
         """Edit recipe."""
+        """Call approve enabled recipe to save and approve edited recipe."""
         recipe_new_filter_message = conf.get('recipe',
                                              'recipe_new_filter_message')
         recipe_new_action = conf.get('recipe', 'recipe_new_action')
@@ -142,6 +160,7 @@ class Recipe(Base):
         save_draft_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.save_draft))
         save_draft_button.click()
+        self.message_alert_helper()
         return self.approve_enabled_recipe(conf)
 
     def action_configuration(self, conf, recipe_action):
@@ -177,9 +196,12 @@ class Recipe(Base):
 
     def delete_recipe(self):
         """Delete a recipe."""
+        """Returns home pages and list of notifications."""
         from pages.home import Home
-        self.find_element(*self.LOCATORS.deletebutton).click()
+        self.find_element(*self.LOCATORS.delete_button).click()
         confirm_delete = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.confirm_delete))
         confirm_delete.click()
-        return Home(self.selenium, self.base_url, 30).wait_for_page_to_load()
+        messages_list = self.message_alert_helper()
+        home_page = Home(self.selenium, self.base_url)
+        return home_page.wait_for_page_to_load(), messages_list
