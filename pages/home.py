@@ -18,7 +18,7 @@ class Home(Base):
     def click_add_recipe(self):
         """Click add button to create recipe."""
         from pages.recipe import Recipe
-        self.find_element(*self.LOCATORS.addbutton).click()
+        self.find_element(*self.LOCATORS.add_button).click()
         return Recipe(self.selenium, self.base_url).wait_for_page_to_load()
 
     def create_approved_recipe(self, conf):

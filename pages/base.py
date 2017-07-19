@@ -24,7 +24,7 @@ class Base(Page):
         """Return list of notification texts."""
         notif = self.wait.until(EC.visibility_of_element_located(
           self.LOCATORS.notif))
-        messages = notif.find_elements(*self.LOCATORS.messagealert)
+        messages = notif.find_elements(*self.LOCATORS.message_alert)
         notifications_text_list = []
         for message in messages:
             notifications_text_list.append(message.text)

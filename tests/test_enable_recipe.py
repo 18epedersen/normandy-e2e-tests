@@ -15,4 +15,4 @@ def test_enable_recipe(conf, base_url, selenium):
     notification_text_list = recipe_page.get_notification_texts
     assert "Recipe enabled." in notification_text_list
     assert recipe_page.find_element(
-     *recipe_page.LOCATORS.disablebutton).is_displayed()
+     *recipe_page.LOCATORS.disable_button).is_displayed()

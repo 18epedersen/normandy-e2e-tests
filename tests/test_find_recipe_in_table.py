@@ -19,10 +19,10 @@ def test_find_recipe_in_table(conf, base_url, selenium):
     found_recipe_at_rest_api = find_recipe_rest_api(conf, recipe_name)
     assert found_recipe, "recipe name not found"
     assert recipe_page.find_element(
-     *recipe_page.LOCATORS.filtertextbox).text == conf.get('recipe',
+     *recipe_page.LOCATORS.filter_textbox).text == conf.get('recipe',
                                                            'recipe_additional_filters') # noqa
     assert action_selected == conf.get('recipe', 'recipe_action')
     assert recipe_page.find_element(
-     *recipe_page.LOCATORS.actionmessage).get_attribute('value') == conf.get(
+     *recipe_page.LOCATORS.action_message).get_attribute('value') == conf.get(
       'recipe', 'recipe_message')
     assert found_recipe_at_rest_api

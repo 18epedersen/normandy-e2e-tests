@@ -15,7 +15,7 @@ class DuoLogin(Base):
     def wait_for_page_to_load(self):
         """Wait for page load method for a0-notloggedin class to load."""
         self.wait.until(EC.visibility_of_element_located(
-          self.LOCATORS.a0notloggedin))
+          self.LOCATORS.a0_not_logged_in))
         return self
 
     def duo_login(self, conf):
@@ -23,15 +23,15 @@ class DuoLogin(Base):
         secret = conf.get('login', 'secret')
         QR_code = generate_QR_code(secret)
         self.selenium.switch_to_frame(
-         self.find_element(*self.LOCATORS.duoiframe))
+         self.find_element(*self.LOCATORS.duo_iframe))
         dropdown_element = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.dropdown))
         select = Select(dropdown_element)
         select.select_by_value(self.LOCATORS.value)
         passcode_button = self.wait.until(EC.element_to_be_clickable(
-          self.LOCATORS.passcodebutton))
+          self.LOCATORS.passcode_button))
         passcode_button.click()
-        self.find_element(*self.LOCATORS.QRinput).send_keys(QR_code)
-        self.find_element(*self.LOCATORS.loginbutton).click()
+        self.find_element(*self.LOCATORS.QR_input).send_keys(QR_code)
+        self.find_element(*self.LOCATORS.login_button).click()
         self.selenium.switch_to_default_content()
         return Home(self.selenium, self.base_url, 60).wait_for_page_to_load()

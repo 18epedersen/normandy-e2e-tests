@@ -16,4 +16,4 @@ def test_approve_recipe(conf, base_url, selenium):
     assert 'Approval requested.' in notification_text_list
     assert "Revision was approved." in notification_text_list
     assert recipe_page.find_element(
-     *recipe_page.LOCATORS.enablebutton).is_displayed()
+     *recipe_page.LOCATORS.enable_button).is_displayed()

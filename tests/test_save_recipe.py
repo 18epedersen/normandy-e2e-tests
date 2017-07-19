@@ -14,5 +14,5 @@ def test_save_recipe(conf, base_url, selenium):
     recipe_page.save_recipe(conf)
     notifications_text_list = recipe_page.get_notification_texts
     assert recipe_page.find_element(
-     *recipe_page.LOCATORS.requestbutton).is_displayed()
+     *recipe_page.LOCATORS.request_button).is_displayed()
     assert 'Recipe saved.' in notifications_text_list

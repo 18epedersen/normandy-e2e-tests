@@ -4,6 +4,7 @@ import configparser
 import pyotp
 import json
 import requests
+from foxpuppet import FoxPuppet
 
 
 @pytest.fixture
@@ -19,6 +20,18 @@ def base_url():
     """Return base url fixture."""
     # return conf.get("stage", "base_url")
     return 'https://normandy-admin.stage.mozaws.net/control/recipe/'
+
+
+@pytest.fixture
+def browser(foxpuppet):
+    """Return Firefox browser window."""
+    return foxpuppet.browser
+
+
+@pytest.fixture
+def foxpuppet(selenium):
+    """Return foxpuppet."""
+    return FoxPuppet(selenium)
 
 
 def generate_QR_code(secret):
