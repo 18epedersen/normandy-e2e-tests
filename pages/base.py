@@ -10,7 +10,7 @@ class Base(Page):
 
     def __init__(self, selenium, base_url, **url_kwargs):
         """Override Page's init method to set a higher timeout."""
-        super(Base, self).__init__(selenium, base_url, timeout=40,
+        super(Base, self).__init__(selenium, base_url, timeout=60,
                                    **url_kwargs)
 
     @property

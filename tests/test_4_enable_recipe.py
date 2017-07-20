@@ -9,6 +9,7 @@ def test_enable_recipe(conf, base_url, selenium, qr_code):
     LDAP = LDAPLogin(selenium, base_url)
     home_page = LDAP.setup(conf, qr_code)
     recipe_page, recipe_name, messages_list = home_page.create_approved_and_enabled_recipe(conf) # noqa
-    assert "Recipe enabled." in messages_list
+    print("messages_list ", messages_list)
+    assert "Recipe enabled." in messages_list or "Revision approved." in messages_list
     assert recipe_page.find_element(
      *recipe_page.LOCATORS.disable_button).is_displayed()
