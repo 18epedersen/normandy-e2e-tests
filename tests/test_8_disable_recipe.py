@@ -1,4 +1,3 @@
-"""Pytest."""
 import pytest
 from pages.ldap_login import LDAPLogin
 from tests.conftest import find_recipe_rest_api

@@ -66,7 +66,7 @@ class Recipe(Base):
         save_new_recipe_button.click()
         messages_list = self.message_alert_helper()
         recipe_page = Recipe(self.selenium, self.base_url)
-        return recipe_page.wait_for_request_button(), recipe_name, messages_list
+        return recipe_page.wait_for_request_button(), recipe_name, messages_list # noqa
 
     def message_alert_helper(self):
         """Return a list of messages' texts from notifications."""
