@@ -8,7 +8,7 @@ from pages import locators
 class LDAPLogin(Base):
     """Login class for demo LDAP account."""
 
-    URL_TEMPLATE = "/control/recipe/"
+    URL_TEMPLATE = "/control-new/"
     LOCATORS = locators.LDAPLogin
 
     def wait_for_page_to_load(self):

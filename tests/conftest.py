@@ -19,7 +19,7 @@ def conf():
 @pytest.fixture(scope="session")
 def base_url():
     """Return base url fixture."""
-    return 'https://normandy-admin.stage.mozaws.net/control/recipe/'
+    return 'https://normandy.dev.mozaws.net/control-new/'
 
 
 @pytest.fixture

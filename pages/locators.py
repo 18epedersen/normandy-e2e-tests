@@ -11,6 +11,13 @@ class Base:
     message_alert = (By.CLASS_NAME, 'message')
 
 
+# class Login(Base):
+#     """Locators for Login."""
+#
+#     login_button = (By.CLASS_NAME, 'button')
+#     password = (By.NAME, 'password')
+#     username = (By.NAME, 'username')
+
 class LDAPLogin(Base):
     """Locators for LDAPLogin."""
 
@@ -36,11 +43,38 @@ class DuoLogin(Base):
 class Home(Base):
     """Locators for Home."""
 
-    add_button = (By.CSS_SELECTOR, '.button')
-    recipe_table = (By.CLASS_NAME, 'recipe-list')
-    t_body = (By.TAG_NAME, 'tbody')
-    td = (By.TAG_NAME, 'td')
-    tr = (By.TAG_NAME, 'tr')
+    logo = (By.CLASS_NAME, 'logo')
+    recipe_card = (By.CLASS_NAME, 'ant-card-body')
+    a_href = (By.CSS_SELECTOR, 'a')
+    recipes = (By.CSS_SELECTOR,
+               'div.gw-col:nth-child(1) > div:nth-child(1) > div:nth-child(2) > a:nth-child(3)') # noqa
+
+
+class RecipesListing(Base):
+    """Locators for Recipe Listings."""
+
+    new_recipe_button = (By.CSS_SELECTOR,
+                         '.ant-col-8 > a:nth-child(1) > button:nth-child(1)')
+
+
+class NewRecipe(Base):
+    """Locators for Create New Recipe."""
+
+    primary = (By.CLASS_NAME, 'primary')
+    name = (By.ID, 'name')
+    extra_filter_expression = (By.ID, 'extra_filter_expression')
+    select_action_dropdown = (By.CLASS_NAME, 'ant-select-selection--single')
+    action_message = (By.ID, 'arguments.message')
+    save_button = (By.CSS_SELECTOR, '.primary > button:nth-child(1)')
+    console_log = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(1)')
+    show_heartbeat = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(2)')
+    survey_id = (By.ID, 'arguments.surveyId')
+    thanks_message = (By.ID, 'arguments.thanksMessage')
+    post_answer_url = (By.ID, 'arguments.postAnswerUrl')
+    learn_more = (By.ID, 'arguments.learnMoreMessage')
+    learn_more_url = (By.ID, 'arguments.learnMoreUrl')
+
+
 
 
 class Recipe(Base):

@@ -1,5 +1,5 @@
 [stage]
-rest_api_url = https://normandy.stage.mozaws.net/api/v1/recipe/signed/?enabled=1
+rest_api_url = https://normandy.dev.mozaws.net/api/v1/recipe/signed/?enabled=1
 
 [login]
 username =
