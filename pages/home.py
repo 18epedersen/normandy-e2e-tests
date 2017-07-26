@@ -19,4 +19,5 @@ class Home(Base):
         from pages.recipes_listing import RecipesListing
         recipe = self.find_element(*self.LOCATORS.recipes)
         recipe.click()
-        return RecipesListing(self.selenium, self.base_url).wait_for_page_to_load()
+        return RecipesListing(self.selenium,
+                              self.base_url).wait_for_page_to_load()

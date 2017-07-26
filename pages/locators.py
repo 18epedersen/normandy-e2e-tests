@@ -7,16 +7,8 @@ class Base:
 
     heading = (By.TAG_NAME, "h1")
     heading_two = (By.TAG_NAME, "h2")
-    notif = (By.CLASS_NAME, 'notifications')
-    message_alert = (By.CLASS_NAME, 'message')
+    alert_message = (By.CLASS_NAME, 'ant-alert-message')
 
-
-# class Login(Base):
-#     """Locators for Login."""
-#
-#     login_button = (By.CLASS_NAME, 'button')
-#     password = (By.NAME, 'password')
-#     username = (By.NAME, 'username')
 
 class LDAPLogin(Base):
     """Locators for LDAPLogin."""
@@ -36,7 +28,7 @@ class DuoLogin(Base):
     login_button = (By.CSS_SELECTOR, 'button.positive:nth-child(5)')
     passcode_button = (By.CSS_SELECTOR, 'button.positive:nth-child(5)')
     QR_input = (By.CSS_SELECTOR,
-               'div.passcode-label:nth-child(1) > input:nth-child(4)') # noqa
+                'div.passcode-label:nth-child(1) > input:nth-child(4)')
     value = 'token'
 
 
@@ -44,68 +36,97 @@ class Home(Base):
     """Locators for Home."""
 
     logo = (By.CLASS_NAME, 'logo')
+
+    # fix me
     recipe_card = (By.CLASS_NAME, 'ant-card-body')
     a_href = (By.CSS_SELECTOR, 'a')
+
+    # fix me
     recipes = (By.CSS_SELECTOR,
-               'div.gw-col:nth-child(1) > div:nth-child(1) > div:nth-child(2) > a:nth-child(3)') # noqa
+               'div.gw-col:nth-child(1) > div:nth-child(1) \
+               > div:nth-child(2) > a:nth-child(3)')
 
 
 class RecipesListing(Base):
     """Locators for Recipe Listings."""
 
+    # fix me
     new_recipe_button = (By.CSS_SELECTOR,
                          '.ant-col-8 > a:nth-child(1) > button:nth-child(1)')
+    tr = (By.TAG_NAME, 'tr')
+    td = (By.TAG_NAME, 'td')
 
 
 class NewRecipe(Base):
     """Locators for Create New Recipe."""
 
+    # general selectors for creating new recipe
+    # fix me
     primary = (By.CLASS_NAME, 'primary')
-    name = (By.ID, 'name')
-    extra_filter_expression = (By.ID, 'extra_filter_expression')
+    recipe_name_field = (By.ID, 'name')
+    recipe_filter_expression = (By.ID, 'extra_filter_expression')
+
+    # fix me
     select_action_dropdown = (By.CLASS_NAME, 'ant-select-selection--single')
-    action_message = (By.ID, 'arguments.message')
+
+    # fix me
     save_button = (By.CSS_SELECTOR, '.primary > button:nth-child(1)')
-    console_log = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(1)')
-    show_heartbeat = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(2)')
+
+    # console log
+    action_message = (By.ID, 'arguments.message')
+
+    # fix me
+    console_log = (By.CSS_SELECTOR,
+                   'li.ant-select-dropdown-menu-item:nth-child(1)')
+
+    # heart beat
+    # fix me
+    show_heartbeat = (By.CSS_SELECTOR,
+                      'li.ant-select-dropdown-menu-item:nth-child(2)')
     survey_id = (By.ID, 'arguments.surveyId')
     thanks_message = (By.ID, 'arguments.thanksMessage')
     post_answer_url = (By.ID, 'arguments.postAnswerUrl')
     learn_more = (By.ID, 'arguments.learnMoreMessage')
     learn_more_url = (By.ID, 'arguments.learnMoreUrl')
 
+    # preference experiment
+
+    # fix me
+    preference_experiment = (By.CSS_SELECTOR,
+                             'li.ant-select-dropdown-menu-item:nth-child(3)')
+    experiment_name = (By.ID, 'arguments.slug')
+    experiment_document_url = (By.ID, 'arguments.experimentDocumentUrl')
+    preference_name = (By.ID, 'arguments.preferenceName')
+
+    # fix me
+    branch_name = (By.CSS_SELECTOR,
+                   '.branch-fields > div:nth-child(1) > div:nth-child(2) > \
+                   div:nth-child(1) > input:nth-child(1)')
 
 
+class ViewRecipe(Base):
+    """Locators for view recipe."""
 
-class Recipe(Base):
-    """Locators for Recipe."""
+    # fix me
+    request_approval_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(3)')
 
-    action = (By.NAME, 'action')
-    action_message = (By.NAME, 'arguments.message')
-    approve_button = (By.CSS_SELECTOR, '.action-approve')
-    approve_message_button = (By.CSS_SELECTOR, '.mini-button')
-    approve_message_textbox = (By.CSS_SELECTOR,
-                             '.approve-dropdown > textarea:nth-child(1)') # noqa
-    confirm_button = (By.CSS_SELECTOR, ".submit")
-    confirm_delete = (By.CLASS_NAME, 'delete')
-    delete_button = (By.CLASS_NAME, 'action-delete')
-    disable_button = (By.CLASS_NAME, 'action-disable')
-    enable_button = (By.CSS_SELECTOR, ".action-enable")
-    experiment_doc_url = (By.NAME, 'arguments.experimentDocumentUrl')
-    filter_textbox = (By.NAME, 'extra_filter_expression')
-    learn_more = (By.NAME, 'arguments.learnMoreMessage')
-    learn_more_url = (By.NAME, 'arguments.learnMoreUrl')
-    name = (By.NAME, 'name')
-    post_answer_url = (By.NAME, 'arguments.postAnswerUrl')
-    preference_branch = (By.NAME, 'arguments.preferenceBranchType')
-    preference_name = (By.NAME, 'arguments.preferenceName')
-    preference_type = (By.NAME, 'arguments.preferenceType')
-    recipes_breadcrumb = (By.CSS_SELECTOR,
-                         '.breadcrumbs > span:nth-child(1) > a:nth-child(1)') # noqa
-    request_button = (By.CLASS_NAME, 'action-request')
-    save = (By.CLASS_NAME, 'action-new')
-    save_draft = (By.CLASS_NAME, 'action-save')
-    slug = (By.NAME, 'arguments.slug')
-    status_text = (By.CLASS_NAME, "status-text")
-    survey_id = (By.NAME, 'arguments.surveyId')
-    thanks_message = (By.NAME, 'arguments.thanksMessage')
+    # fix me
+    edit_button = (By.CSS_SELECTOR,
+                   '.details-action-bar > a:nth-child(2) \
+                   > button:nth-child(1)')
+
+    # fix me
+    clone_button = (By.CSS_SELECTOR,
+                    '.details-action-bar > a:nth-child(1) \
+                     > button:nth-child(1)')
+
+    alert_message = (By.CLASS_NAME, 'ant-alert-message')
+
+
+class EditRecipe(Base):
+    """Locators for editing a recipe."""
+
+    # fix me
+    action_name = (By.CSS_SELECTOR,
+                   'div.ant-card:nth-child(2) > div:nth-child(2) \
+                   > dl:nth-child(1) > dd:nth-child(2)')

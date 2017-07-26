@@ -22,3 +22,8 @@ class Base(Page):
     def heading_two(self):
         """H2 heading."""
         return self.find_element(*self.LOCATORS.heading_two).text
+
+    @property
+    def alert_message(self):
+        """H1 Heading."""
+        return self.find_element(*self.LOCATORS.alert_message).text

@@ -2,19 +2,27 @@
 rest_api_url = https://normandy.dev.mozaws.net/api/v1/recipe/signed/?enabled=1
 
 [login]
-username =
+username = 
 password =
 secret =
 
 [recipe]
-recipe_survey_id = Normandy-test
-recipe_additional_filters = true
-recipe_action = console-log
-recipe_message = testing message
-recipe_approve = approved!
-recipe_new_filter_message = false
-recipe_new_action = show-heartbeat
-recipe_thanks_message = Default thanks Message
-recipe_post_url = https://example.net
-recipe_learn_more = Default learn more
-recipe_learn_more_url = https://example.com
+filter_expression = true
+
+
+[console_log]
+message = console log message
+
+[heart_beat]
+survey_id = heart_beat_test
+message = heart_beat message
+thanks_message = heart_beat thanks Message
+post_url = https://hearbeat.net
+learn_more = heart_beat learn more
+learn_more_url = https://heartbeat.com
+
+[preference_experiment]
+experiment_name = preference_experiment_test
+experiment_doc_url = https://preference.com
+preference_name = preference_name_test
+branch_name = branch_test
