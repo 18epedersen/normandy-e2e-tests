@@ -37,11 +37,11 @@ class Home(Base):
 
     logo = (By.CLASS_NAME, 'logo')
 
-    # fix me
+    # TODO: add a unique id for the recipes card on the home page
     recipe_card = (By.CLASS_NAME, 'ant-card-body')
     a_href = (By.CSS_SELECTOR, 'a')
 
-    # fix me
+    # TODO: add a unique id for the 'recipes' button on the recipes card
     recipes = (By.CSS_SELECTOR,
                'div.gw-col:nth-child(1) > div:nth-child(1) \
                > div:nth-child(2) > a:nth-child(3)')
@@ -50,7 +50,7 @@ class Home(Base):
 class RecipesListing(Base):
     """Locators for Recipe Listings."""
 
-    # fix me
+    # TODO: add a unique id for the new recipe button
     new_recipe_button = (By.CSS_SELECTOR,
                          '.ant-col-8 > a:nth-child(1) > button:nth-child(1)')
     tr = (By.TAG_NAME, 'tr')
@@ -61,26 +61,26 @@ class NewRecipe(Base):
     """Locators for Create New Recipe."""
 
     # general selectors for creating new recipe
-    # fix me
-    primary = (By.CLASS_NAME, 'primary')
+
     recipe_name_field = (By.ID, 'name')
     recipe_filter_expression = (By.ID, 'extra_filter_expression')
 
-    # fix me
+    # TODO: add a unique id for the recipe action dropdown
     select_action_dropdown = (By.CLASS_NAME, 'ant-select-selection--single')
 
-    # fix me
+    # TODO: add a unique id for the save button
     save_button = (By.CSS_SELECTOR, '.primary > button:nth-child(1)')
 
     # console log
     action_message = (By.ID, 'arguments.message')
 
-    # fix me
+    # TODO: add a unique id or value for the console-log action
     console_log = (By.CSS_SELECTOR,
                    'li.ant-select-dropdown-menu-item:nth-child(1)')
 
     # heart beat
-    # fix me
+
+    # TODO: add a unique id or value for the show_heartbeat action
     show_heartbeat = (By.CSS_SELECTOR,
                       'li.ant-select-dropdown-menu-item:nth-child(2)')
     survey_id = (By.ID, 'arguments.surveyId')
@@ -91,14 +91,14 @@ class NewRecipe(Base):
 
     # preference experiment
 
-    # fix me
+    # TODO: add a unique id or value for the preference_experiment action
     preference_experiment = (By.CSS_SELECTOR,
                              'li.ant-select-dropdown-menu-item:nth-child(3)')
     experiment_name = (By.ID, 'arguments.slug')
     experiment_document_url = (By.ID, 'arguments.experimentDocumentUrl')
     preference_name = (By.ID, 'arguments.preferenceName')
 
-    # fix me
+    # TODO: add a unique id or value for the console-log action
     branch_name = (By.CSS_SELECTOR,
                    '.branch-fields > div:nth-child(1) > div:nth-child(2) > \
                    div:nth-child(1) > input:nth-child(1)')
@@ -107,15 +107,15 @@ class NewRecipe(Base):
 class ViewRecipe(Base):
     """Locators for view recipe."""
 
-    # fix me
+    # TODO: add a unique id for the request approval button
     request_approval_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(3)')
 
-    # fix me
+    # TODO: add a unique id or value for the edit button
     edit_button = (By.CSS_SELECTOR,
                    '.details-action-bar > a:nth-child(2) \
                    > button:nth-child(1)')
 
-    # fix me
+    # TODO: add a unique id or value for the clone button
     clone_button = (By.CSS_SELECTOR,
                     '.details-action-bar > a:nth-child(1) \
                      > button:nth-child(1)')
@@ -126,7 +126,7 @@ class ViewRecipe(Base):
 class EditRecipe(Base):
     """Locators for editing a recipe."""
 
-    # fix me
+    # TODO: add a unique id the action name on the edit recipe page
     action_name = (By.CSS_SELECTOR,
                    'div.ant-card:nth-child(2) > div:nth-child(2) \
                    > dl:nth-child(1) > dd:nth-child(2)')

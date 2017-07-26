@@ -13,7 +13,7 @@ class NewRecipe(Base):
     def wait_for_page_to_load(self):
         """Wait for recipe page's submit button."""
         self.wait.until(EC.visibility_of_element_located(
-         self.LOCATORS.primary))
+         self.LOCATORS.save_button))
         return self
 
     def pick_random_action(self):
