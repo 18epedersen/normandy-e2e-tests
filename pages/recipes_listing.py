@@ -5,6 +5,9 @@ from pages import locators
 from pages.new_recipe import NewRecipe
 
 
+# LOCATORS = locators.RecipesListing
+
+
 class RecipesListing(Base):
     """Home Class for Normandy Control UI."""
 
@@ -13,7 +16,7 @@ class RecipesListing(Base):
     def wait_for_page_to_load(self):
         """Wait for visibility of rows on Normandy's home page to load."""
         self.wait.until(EC.visibility_of_all_elements_located(
-         self.LOCATORS.new_recipe_button))
+            self.LOCATORS.tr))
         return self
 
     def click_new_recipe(self):
@@ -22,19 +25,40 @@ class RecipesListing(Base):
         self.find_element(*self.LOCATORS.new_recipe_button).click()
         return NewRecipe(self.selenium, self.base_url).wait_for_page_to_load()
 
-    def select_most_recent_recipe(self):
+    def select_top_recipe(self):
         """Click on a random recipe."""
         from pages.view_recipe import ViewRecipe
-        recipe_page = None
-        row_content = []
-        rows = self.wait.until(EC.visibility_of_all_elements_located(
-         self.LOCATORS.tr))
-        found = False
+        view_recipe_page = None
+        tbody = self.wait.until(EC.visibility_of_element_located(
+          self.LOCATORS.tbody))
+        rows = tbody.find_elements(*self.LOCATORS.tr)
         for row in rows:
             cols = row.find_elements(*self.LOCATORS.td)
             for col in cols:
-                row_content = self.get_row_content(row)
                 col.click()
                 view_recipe_page = ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load() # noqa
                 break
-    return recipe_page, row_content
+            break
+        return view_recipe_page
+
+    # def select_recipe(self, recipe_name):
+    #     """Click on a random recipe."""
+    #     from pages.view_recipe import ViewRecipe
+    #     print("recipe name is ", recipe_name)
+    #     view_recipe_page = None
+    #     tbody = self.wait.until(EC.visibility_of_element_located(
+    #       self.LOCATORS.tbody))
+    #     rows = tbody.find_elements(*self.LOCATORS.tr)
+    #     found = False
+    #     for row in rows:
+    #         cols = row.find_elements(*self.LOCATORS.td)
+    #         for col in cols:
+    #             print("col.text", col.text)
+    #             if col.text == recipe_name:
+    #                 found = True
+    #                 col.click()
+    #                 view_recipe_page = ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load() # noqa
+    #                 break
+    #         if found:
+    #             break
+    #     return view_recipe_page

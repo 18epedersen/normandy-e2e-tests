@@ -9,6 +9,6 @@ def test_request_approval(conf, base_url, selenium, qr_code):
     ldap_page = LDAPLogin(selenium, base_url)
     home_page = ldap_page.setup(conf, qr_code)
     recipes_listing_page = home_page.click_recipes()
-    view_recipe_page = recipes_listing_page.select_most_recent_recipe()
+    view_recipe_page = recipes_listing_page.select_top_recipe()
     view_recipe_page = view_recipe_page.click_request_approval()
     assert view_recipe_page.alert_message == "This is a pending approval."

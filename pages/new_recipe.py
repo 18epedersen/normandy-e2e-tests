@@ -1,8 +1,7 @@
-"""Expected conditions."""
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages import locators
-# import time
+import time
 
 
 class NewRecipe(Base):
@@ -43,21 +42,35 @@ class NewRecipe(Base):
         save_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.save_button))
         save_button.click()
-        return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()
+        return ViewRecipe(self.selenium,
+                          self.base_url).wait_for_page_to_load(), recipe_action
+
+    def select_random_branch_preference(self):
+        """Select a random branch preference."""
+        from random import choice
+        preferences = [True, False]
+        random_preference = choice(preferences)
+        if random_preference:
+            self.find_element(*self.LOCATORS.true_preference).click()
+        else:
+            self.find_element(*self.LOCATORS.false_preference).click()
 
     def configure_action(self, conf, recipe_action):
         """Configure action for recipe."""
-        select_action_dropdown = self.wait.until(EC.element_to_be_clickable(
-          self.LOCATORS.select_action_dropdown))
-        select_action_dropdown.click()
+        action_dropdown = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.action_dropdown))
+        action_dropdown.click()
+        time.sleep(5)
         if recipe_action == 'console-log':
-            console_log = self.find_element(*self.LOCATORS.console_log)
+            console_log = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.console_log))
             console_log.click()
             message = conf.get('console_log', 'message')
             self.find_element(*self.LOCATORS.action_message).clear()
             self.find_element(*self.LOCATORS.action_message).send_keys(message)
         if recipe_action == 'show-heartbeat':
-            heart_beat = self.find_element(*self.LOCATORS.show_heartbeat)
+            heart_beat = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.show_heartbeat))
             heart_beat.click()
             survey_id = conf.get('heart_beat', 'survey_id')
             message = conf.get('heart_beat', 'message')
@@ -81,8 +94,8 @@ class NewRecipe(Base):
             self.find_element(*self.LOCATORS.learn_more_url).send_keys(
              learn_more_url)
         if recipe_action == 'preference-experiment':
-            preference_experiment = self.find_element(
-             *self.LOCATORS.preference_experiment)
+            preference_experiment = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.preference_experiment))
             preference_experiment.click()
             experiment_name = conf.get('preference_experiment',
                                        'experiment_name')
@@ -100,6 +113,8 @@ class NewRecipe(Base):
             self.find_element(*self.LOCATORS.preference_name).clear()
             self.find_element(*self.LOCATORS.preference_name).send_keys(
              preference_name)
+            self.find_element(*self.LOCATORS.add_branch_button).click()
             self.find_element(*self.LOCATORS.branch_name).clear()
             self.find_element(*self.LOCATORS.branch_name).send_keys(
              branch_name)
+            self.select_random_branch_preference()

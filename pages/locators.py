@@ -1,4 +1,3 @@
-"""By method."""
 from selenium.webdriver.common.by import By
 
 
@@ -8,6 +7,11 @@ class Base:
     heading = (By.TAG_NAME, "h1")
     heading_two = (By.TAG_NAME, "h2")
     alert_message = (By.CLASS_NAME, 'ant-alert-message')
+
+    # TODO: make unique id
+    home_breadcrumb = (By.CSS_SELECTOR,
+                       '.ant-breadcrumb > span:nth-child(1) > span:nth-child(1) \
+                       > a:nth-child(1)')
 
 
 class LDAPLogin(Base):
@@ -37,24 +41,18 @@ class Home(Base):
 
     logo = (By.CLASS_NAME, 'logo')
 
-    # TODO: add a unique id for the recipes card on the home page
-    recipe_card = (By.CLASS_NAME, 'ant-card-body')
+    recipe_card = (By.ID, 'gw-recipes-card')
     a_href = (By.CSS_SELECTOR, 'a')
-
-    # TODO: add a unique id for the 'recipes' button on the recipes card
-    recipes = (By.CSS_SELECTOR,
-               'div.gw-col:nth-child(1) > div:nth-child(1) \
-               > div:nth-child(2) > a:nth-child(3)')
+    recipes = (By.ID, 'gw-recipes-link')
 
 
 class RecipesListing(Base):
     """Locators for Recipe Listings."""
 
-    # TODO: add a unique id for the new recipe button
-    new_recipe_button = (By.CSS_SELECTOR,
-                         '.ant-col-8 > a:nth-child(1) > button:nth-child(1)')
+    new_recipe_button = (By.ID, 'lab-recipe-button')
     tr = (By.TAG_NAME, 'tr')
     td = (By.TAG_NAME, 'td')
+    tbody = (By.CLASS_NAME, 'ant-table-tbody')
 
 
 class NewRecipe(Base):
@@ -65,11 +63,9 @@ class NewRecipe(Base):
     recipe_name_field = (By.ID, 'name')
     recipe_filter_expression = (By.ID, 'extra_filter_expression')
 
-    # TODO: add a unique id for the recipe action dropdown
-    select_action_dropdown = (By.CLASS_NAME, 'ant-select-selection--single')
+    action_dropdown = (By.ID, 'rf-action-select')
 
-    # TODO: add a unique id for the save button
-    save_button = (By.CSS_SELECTOR, '.primary > button:nth-child(1)')
+    save_button = (By.ID, 'rf-save-button')
 
     # console log
     action_message = (By.ID, 'arguments.message')
@@ -95,38 +91,34 @@ class NewRecipe(Base):
     preference_experiment = (By.CSS_SELECTOR,
                              'li.ant-select-dropdown-menu-item:nth-child(3)')
     experiment_name = (By.ID, 'arguments.slug')
-    experiment_document_url = (By.ID, 'arguments.experimentDocumentUrl')
+    experiment_doc_url = (By.ID, 'arguments.experimentDocumentUrl')
     preference_name = (By.ID, 'arguments.preferenceName')
 
-    # TODO: add a unique id or value for the console-log action
-    branch_name = (By.CSS_SELECTOR,
-                   '.branch-fields > div:nth-child(1) > div:nth-child(2) > \
-                   div:nth-child(1) > input:nth-child(1)')
+    # TODO: add a unique branch button id
+    add_branch_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
+
+    # TODO: add unique id for true value
+    true_preference = (By.CSS_SELECTOR,
+                       'label.ant-radio-button-wrapper:nth-child(1)')
+
+    # TODO: add unique id for false value
+    false_preference = (By.CSS_SELECTOR,
+                        'label.ant-radio-button-wrapper:nth-child(2)')
+
+    branch_name = (By.ID, 'pef-branch-name')
 
 
 class ViewRecipe(Base):
     """Locators for view recipe."""
 
-    # TODO: add a unique id for the request approval button
-    request_approval_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(3)')
-
-    # TODO: add a unique id or value for the edit button
-    edit_button = (By.CSS_SELECTOR,
-                   '.details-action-bar > a:nth-child(2) \
-                   > button:nth-child(1)')
-
-    # TODO: add a unique id or value for the clone button
-    clone_button = (By.CSS_SELECTOR,
-                    '.details-action-bar > a:nth-child(1) \
-                     > button:nth-child(1)')
-
-    alert_message = (By.CLASS_NAME, 'ant-alert-message')
+    request_approval_button = (By.ID, 'dab-request-approval')
+    edit_button = (By.ID, 'dab-edit-button')
+    clone_button = (By.ID, 'dab-clone-button')
+    content = (By.CLASS_NAME, 'ant-layout-content')
 
 
-class EditRecipe(Base):
+class EditRecipe(NewRecipe):
     """Locators for editing a recipe."""
 
-    # TODO: add a unique id the action name on the edit recipe page
-    action_name = (By.CSS_SELECTOR,
-                   'div.ant-card:nth-child(2) > div:nth-child(2) \
-                   > dl:nth-child(1) > dd:nth-child(2)')
+    selected_action_name = (By.CLASS_NAME,
+                            'ant-select-selection-selected-value')

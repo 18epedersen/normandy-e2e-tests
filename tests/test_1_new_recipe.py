@@ -10,7 +10,6 @@ def test_new_recipe(conf, base_url, selenium, qr_code):
     home_page = ldap_page.setup(conf, qr_code)
     recipes_listing_page = home_page.click_recipes()
     new_recipe_page = recipes_listing_page.click_new_recipe()
-    # time.sleep(600)
     assert new_recipe_page.heading_two == "Create New Recipe"
     assert new_recipe_page.find_element(
-     *new_recipe_page.LOCATORS.primary).is_displayed()
+     *new_recipe_page.LOCATORS.save_button).is_displayed()
