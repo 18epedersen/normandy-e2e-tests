@@ -107,6 +107,10 @@ class NewRecipe(Base):
 
     branch_name = (By.ID, 'pef-branch-name')
 
+    # TODO: add unique id for opt-out-study, and currently opt-out-study feature is broken.
+    # opt-out-study
+    opt_out_study = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(4)')
+
 
 class ViewRecipe(Base):
     """Locators for view recipe."""
@@ -115,6 +119,7 @@ class ViewRecipe(Base):
     edit_button = (By.ID, 'dab-edit-button')
     clone_button = (By.ID, 'dab-clone-button')
     content = (By.CLASS_NAME, 'ant-layout-content')
+    approval_request_button = (By.ID, 'dab-approval-status')
 
 
 class EditRecipe(NewRecipe):
@@ -122,3 +127,17 @@ class EditRecipe(NewRecipe):
 
     selected_action_name = (By.CLASS_NAME,
                             'ant-select-selection-selected-value')
+
+
+class ApprovalHistory(Base):
+    """Locators for approval history."""
+
+    # TODO: unique name for recipe card on approval history page
+    recipe_card = (By.CSS_SELECTOR, '.recipe-details > div:nth-child(1)')
+
+    # TODO: unique name for approve button on approval history page
+    approve = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
+
+    comment = (By.ID, 'comment')
+
+    tag = (By.CLASS_NAME, 'ant-tag-text')

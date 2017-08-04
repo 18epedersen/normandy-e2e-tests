@@ -1,4 +1,3 @@
-"""Expected conditions."""
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from pages.base import Base

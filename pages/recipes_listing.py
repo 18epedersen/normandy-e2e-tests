@@ -1,4 +1,3 @@
-"""Expected conditions method for selenium webdriver."""
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages import locators
@@ -31,15 +30,19 @@ class RecipesListing(Base):
         view_recipe_page = None
         tbody = self.wait.until(EC.visibility_of_element_located(
           self.LOCATORS.tbody))
+        print("found tbody")
         rows = tbody.find_elements(*self.LOCATORS.tr)
+        print("found rows")
         for row in rows:
             cols = row.find_elements(*self.LOCATORS.td)
             for col in cols:
+                print("col.text", col.text)
                 col.click()
-                view_recipe_page = ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load() # noqa
-                break
-            break
-        return view_recipe_page
+                return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()
+                # view_recipe_page = ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load() # noqa
+                # break
+            # break
+        # return view_recipe_page
 
     # def select_recipe(self, recipe_name):
     #     """Click on a random recipe."""

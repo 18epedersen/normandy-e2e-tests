@@ -1,4 +1,3 @@
-"""By method."""
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages.duo_login import DuoLogin

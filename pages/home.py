@@ -1,4 +1,3 @@
-"""Expected conditions method for selenium webdriver."""
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages import locators

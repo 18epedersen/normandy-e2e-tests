@@ -35,3 +35,10 @@ class ViewRecipe(Base):
         """Click add button to create recipe."""
         self.find_element(*self.LOCATORS.clone_button).click()
         return EditRecipe(self.selenium, self.base_url).wait_for_page_to_load()
+
+    def click_approval_request(self):
+        """Click approval request button."""
+        from pages.approval_history import ApprovalHistory
+        self.find_element(*self.LOCATORS.approval_request_button).click()
+        return ApprovalHistory(self.selenium,
+                               self.base_url).wait_for_page_to_load()

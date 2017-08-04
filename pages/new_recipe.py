@@ -18,6 +18,8 @@ class NewRecipe(Base):
     def pick_random_action(self):
         """Return a random recipe action."""
         from random import choice
+        # TODO: opt-out-study action currently not functioning
+        # actions = ['console-log', 'show-heartbeat', 'preference-experiment', 'opt-out-study']
         actions = ['console-log', 'show-heartbeat', 'preference-experiment']
         action = choice(actions)
         print("action is ", action)
@@ -43,7 +45,7 @@ class NewRecipe(Base):
           self.LOCATORS.save_button))
         save_button.click()
         return ViewRecipe(self.selenium,
-                          self.base_url).wait_for_page_to_load(), recipe_action
+                          self.base_url).wait_for_page_to_load(), recipe_action, recipe_name
 
     def select_random_branch_preference(self):
         """Select a random branch preference."""
@@ -57,6 +59,7 @@ class NewRecipe(Base):
 
     def configure_action(self, conf, recipe_action):
         """Configure action for recipe."""
+        import uuid
         action_dropdown = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.action_dropdown))
         action_dropdown.click()
@@ -68,7 +71,7 @@ class NewRecipe(Base):
             message = conf.get('console_log', 'message')
             self.find_element(*self.LOCATORS.action_message).clear()
             self.find_element(*self.LOCATORS.action_message).send_keys(message)
-        if recipe_action == 'show-heartbeat':
+        elif recipe_action == 'show-heartbeat':
             heart_beat = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.show_heartbeat))
             heart_beat.click()
@@ -93,12 +96,12 @@ class NewRecipe(Base):
             self.find_element(*self.LOCATORS.learn_more_url).clear()
             self.find_element(*self.LOCATORS.learn_more_url).send_keys(
              learn_more_url)
-        if recipe_action == 'preference-experiment':
+        elif recipe_action == 'preference-experiment':
             preference_experiment = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.preference_experiment))
             preference_experiment.click()
-            experiment_name = conf.get('preference_experiment',
-                                       'experiment_name')
+            # experiment names must be uniquely global
+            experiment_name = str(uuid.uuid1().hex)
             experiment_doc_url = conf.get('preference_experiment',
                                           'experiment_doc_url')
             preference_name = conf.get('preference_experiment',
@@ -108,7 +111,7 @@ class NewRecipe(Base):
             self.find_element(*self.LOCATORS.experiment_name).send_keys(
              experiment_name)
             self.find_element(*self.LOCATORS.experiment_doc_url).clear()
-            self.find_element(*self.LOCATORS.action_message).send_keys(
+            self.find_element(*self.LOCATORS.experiment_doc_url).send_keys(
              experiment_doc_url)
             self.find_element(*self.LOCATORS.preference_name).clear()
             self.find_element(*self.LOCATORS.preference_name).send_keys(
@@ -118,3 +121,7 @@ class NewRecipe(Base):
             self.find_element(*self.LOCATORS.branch_name).send_keys(
              branch_name)
             self.select_random_branch_preference()
+        else:
+            opt_out_study = self.wait.until(EC.element_to_be_clickable(
+              self.LOCATORS.opt_out_study))
+            opt_out_study.click()
