@@ -12,8 +12,5 @@ def test_edit_recipe(conf, base_url, selenium, foxpuppet, qr_code):
     view_recipe_page = recipes_listing_page.select_top_recipe()
     edit_recipe_page = view_recipe_page.click_edit()
     new_recipe_action = edit_recipe_page.edit_recipe(conf)
-    home_page = edit_recipe_page.click_home_breadcrumb()
-    recipes_listing_page = home_page.click_recipes()
-    view_recipe_page = recipes_listing_page.select_top_recipe()
-    edit_recipe_page = view_recipe_page.click_edit()
-    assert new_recipe_action == edit_recipe_page.get_selected_action()
+
+    # find recipe at rest api endpoint and click tha that the action is what we selected

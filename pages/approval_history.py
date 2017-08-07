@@ -14,11 +14,11 @@ class ApprovalHistory(Base):
         tag_text = self.find_element(*self.LOCATORS.tag).text
         return tag_text
 
-    # need to fix what the approval history page is waiting for when load 
+    # need to fix what the approval history page is waiting for when load
     def wait_for_page_to_load(self):
         """Wait for visibility of rows on Normandy's home page to load."""
         self.wait.until(EC.visibility_of_element_located(
-         self.LOCATORS.recipe_card))
+         self.LOCATORS.approve))
         return self
 
     def click_approve(self):

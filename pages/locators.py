@@ -45,6 +45,9 @@ class Home(Base):
     a_href = (By.CSS_SELECTOR, 'a')
     recipes = (By.ID, 'gw-recipes-link')
 
+    # TODO: unique id for extensions button
+    extensions = (By.CSS_SELECTOR, 'div.gw-col:nth-child(2) > div:nth-child(1) > div:nth-child(1)')
+
 
 class RecipesListing(Base):
     """Locators for Recipe Listings."""
@@ -121,6 +124,14 @@ class ViewRecipe(Base):
     content = (By.CLASS_NAME, 'ant-layout-content')
     approval_request_button = (By.ID, 'dab-approval-status')
 
+    # TODO: unique id for publish button
+    publish_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(3)')
+
+    # TODO: unique id for ok button
+    ok_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
+
+    disable_button = (By.CLASS_NAME, 'ant-btn-danger')
+
 
 class EditRecipe(NewRecipe):
     """Locators for editing a recipe."""
@@ -141,3 +152,27 @@ class ApprovalHistory(Base):
     comment = (By.ID, 'comment')
 
     tag = (By.CLASS_NAME, 'ant-tag-text')
+
+
+class CloneRecipe(EditRecipe):
+    """Locators for cloning a recipe."""
+
+    # TODO: unique id for selected recipe on clone recipe page
+    selected_action = (By.CSS_SELECTOR, 'div.ant-select-selection-selected-value:nth-child(2)')
+
+
+class ExtensionsListing(Base):
+    """Locators for extensions listing."""
+
+    # TODO: unique id for new extensions button
+    new_extensions_button = (By.CSS_SELECTOR, '.ant-col-8 > a:nth-child(1) > button:nth-child(1)')
+
+
+class NewExtension(NewRecipe):
+    """Locators for new extension."""
+
+    # TODO: unique id for upload xpi button
+    upload_xpi_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
+
+    # TODO: unique id for save button
+    save_button = (By.CSS_SELECTOR, '.primary > button:nth-child(1)')

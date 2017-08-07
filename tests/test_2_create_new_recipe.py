@@ -14,9 +14,5 @@ def test_create_new_recipe(conf, base_url, selenium, qr_code):
     assert view_recipe_page.alert_message == "You are viewing a draft."
     assert view_recipe_page.find_element(
      *view_recipe_page.LOCATORS.edit_button).is_displayed()
-    # home_page = view_recipe_page.click_home_breadcrumb()
-    # recipes_listing_page = home_page.click_recipes()
-    # view_recipe_page = recipes_listing_page.select_top_recipe()
-    # assert recipe_action == view_recipe_page.get_selected_action()
-    # found_recipe_in_rest_api = find_recipe_rest_api(conf, recipe_name)
-    # assert found_recipe_in_rest_api
+
+    # check that the created values are at the rest api endpoint

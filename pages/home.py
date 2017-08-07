@@ -20,3 +20,8 @@ class Home(Base):
         recipe.click()
         return RecipesListing(self.selenium,
                               self.base_url).wait_for_page_to_load()
+
+    def click_extensions(self):
+        """Click extensions to the extensions listing page."""
+        from pages.extensions_listing import extensions_listing
+        extensions = self.find_element(*self.LOCATORS.extensions)

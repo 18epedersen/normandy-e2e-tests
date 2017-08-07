@@ -33,8 +33,9 @@ class ViewRecipe(Base):
 
     def click_clone(self):
         """Click add button to create recipe."""
+        from pages.clone_recipe import CloneRecipe
         self.find_element(*self.LOCATORS.clone_button).click()
-        return EditRecipe(self.selenium, self.base_url).wait_for_page_to_load()
+        return CloneRecipe(self.selenium, self.base_url).wait_for_page_to_load()
 
     def click_approval_request(self):
         """Click approval request button."""
@@ -42,3 +43,14 @@ class ViewRecipe(Base):
         self.find_element(*self.LOCATORS.approval_request_button).click()
         return ApprovalHistory(self.selenium,
                                self.base_url).wait_for_page_to_load()
+
+    def publish_recipe(self):
+        """Publish a recipe."""
+        self.find_element(*self.LOCATORS.pubilsh_button).click()
+        self.find_element(*self.LOCATORS.ok_button).click()
+        return self
+
+    def disable_recipe(self):
+        """Disable a recipe."""
+        self.find_element(*self.LOCATORS.disable_button).click()
+        self.find_element(*self.LOCATORS.ok_button).click()
