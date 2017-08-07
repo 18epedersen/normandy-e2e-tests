@@ -143,9 +143,6 @@ class EditRecipe(NewRecipe):
 class ApprovalHistory(Base):
     """Locators for approval history."""
 
-    # TODO: unique name for recipe card on approval history page
-    recipe_card = (By.CSS_SELECTOR, '.recipe-details > div:nth-child(1)')
-
     # TODO: unique name for approve button on approval history page
     approve = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
 
