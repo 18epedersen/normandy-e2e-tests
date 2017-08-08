@@ -13,6 +13,12 @@ class Base:
                        '.ant-breadcrumb > span:nth-child(1) > span:nth-child(1) \
                        > a:nth-child(1)')
 
+    tag = (By.CLASS_NAME, 'ant-tag-text')
+
+    action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)')
+
+
+
 
 class LDAPLogin(Base):
     """Locators for LDAPLogin."""
@@ -20,6 +26,10 @@ class LDAPLogin(Base):
     password = (By.NAME, 'password')
     submit = (By.CSS_SELECTOR, ".auth0-lock-submit")
     username = (By.CLASS_NAME, 'auth0-lock-input-username')
+
+
+class LDAPLoginRestApi(LDAPLogin):
+    """Inherit from LDAPLogin for locators."""
 
 
 class DuoLogin(Base):
@@ -132,16 +142,20 @@ class ViewRecipe(Base):
 
     disable_button = (By.CLASS_NAME, 'ant-btn-danger')
 
+    action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)')
+
 
 class EditRecipe(NewRecipe):
     """Locators for editing a recipe."""
 
     selected_action_name = (By.CLASS_NAME,
                             'ant-select-selection-selected-value')
+    # TODO: view breadcrumb id
+    view_recipe_breadcrumb = (By.CSS_SELECTOR, '.ant-breadcrumb > span:nth-child(3) > span:nth-child(1) > a:nth-child(1)')
 
 
-class ApprovalHistory(Base):
-    """Locators for approval history."""
+class ApprovalHistory(EditRecipe):
+    """Locators for approval history inherit from editrecipe."""
 
     # TODO: unique name for approve button on approval history page
     approve = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')

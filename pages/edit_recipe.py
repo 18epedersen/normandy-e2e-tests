@@ -48,7 +48,7 @@ class EditRecipe(Base):
         save_button.click()
         print("recipename ", recipe_name)
         print("newrecipeacton", new_recipe_action)
-        return new_recipe_action
+        return new_recipe_action, self
         # time.sleep(500)
 
     def select_random_branch_preference(self):
@@ -126,8 +126,9 @@ class EditRecipe(Base):
              branch_name)
             self.select_random_branch_preference()
 
-    # def click_home_breadcrumb(self):
-    #     time.sleep(5)
-    #     from pages.home import Home
-    #     self.find_element(*self.LOCATORS.home_breadcrumb).click()
-    #     return Home(self.selenium, self.base_url).wait_for_page_to_load()
+    def click_view_recipe_breadcrumb(self):
+        """Click on the view recipe breadcrumb."""
+        time.sleep(5)
+        from pages.view_recipe import ViewRecipe
+        self.find_element(*self.LOCATORS.view_recipe_breadcrumb).click()
+        return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()

@@ -10,6 +10,12 @@ class ViewRecipe(Base):
 
     LOCATORS = locators.ViewRecipe
 
+    @property
+    def get_action_name(self):
+        """Get recipe action name."""
+        action_name = self.find_element(*self.LOCATORS.action_name)
+        return action_name.text
+
     def wait_for_page_to_load(self):
         """Wait for recipe page's submit button."""
         # self.wait.until(EC.visibility_of_element_located(
@@ -46,9 +52,11 @@ class ViewRecipe(Base):
 
     def publish_recipe(self):
         """Publish a recipe."""
-        self.find_element(*self.LOCATORS.pubilsh_button).click()
-        self.find_element(*self.LOCATORS.ok_button).click()
-        return self
+        self.find_element(*self.LOCATORS.publish_button).click()
+        ok_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.ok_button))
+        ok_button.click()
+        # return self
 
     def disable_recipe(self):
         """Disable a recipe."""

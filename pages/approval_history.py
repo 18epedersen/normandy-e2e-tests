@@ -1,12 +1,13 @@
 from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages import locators
+import time
 
 
 class ApprovalHistory(Base):
     """Home Class for Normandy Control UI."""
 
-    LOCATORS = locators.Home
+    LOCATORS = locators.ApprovalHistory
 
     @property
     def get_tag(self):
@@ -35,3 +36,10 @@ class ApprovalHistory(Base):
         self.click_approve()
         return ApprovalHistory(self.selenium,
                                self.base_url).wait_for_page_to_load()
+
+    def click_view_recipe_breadcrumb(self):
+        """Click on the view recipe breadcrumb."""
+        time.sleep(5)
+        from pages.view_recipe import ViewRecipe
+        self.find_element(*self.LOCATORS.view_recipe_breadcrumb).click()
+        return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()

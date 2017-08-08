@@ -23,18 +23,6 @@ def base_url():
 
 
 @pytest.fixture
-def browser(foxpuppet):
-    """Return Firefox browser window."""
-    return foxpuppet.browser
-
-
-@pytest.fixture
-def foxpuppet(selenium):
-    """Return foxpuppet."""
-    return FoxPuppet(selenium)
-
-
-@pytest.fixture
 def qr_code(conf, worker_id):
     """Return qr code."""
     secret = conf.get('login', 'secret')

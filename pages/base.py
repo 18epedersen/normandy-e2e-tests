@@ -15,6 +15,18 @@ class Base(Page):
                                    **url_kwargs)
 
     @property
+    def get_tag(self):
+        """Getter for tag."""
+        tag_text = self.find_element(*self.LOCATORS.tag).text
+        return tag_text
+
+    @property
+    def get_action_name(self):
+        """Get recipe action name."""
+        action_name = self.find_element(*self.LOCATORS.action_name)
+        return action_name.text
+
+    @property
     def heading(self):
         """H1 Heading."""
         return self.find_element(*self.LOCATORS.heading).text

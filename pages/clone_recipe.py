@@ -6,7 +6,7 @@ import uuid
 from pages.view_recipe import ViewRecipe
 
 
-class EditRecipe(Base):
+class CloneRecipe(Base):
     """Edit Recipe."""
 
     LOCATORS = locators.CloneRecipe
