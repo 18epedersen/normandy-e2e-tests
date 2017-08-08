@@ -1,8 +1,8 @@
 [stage]
-rest_api_url = https://normandy.dev.mozaws.net/api/v1/recipe/signed/?enabled=1
+rest_api_url = https://normandy.dev.mozaws.net/api/v1/recipe/
 
 [login]
-username = 
+username =
 password =
 secret =
 
@@ -22,7 +22,11 @@ learn_more = heart_beat learn more
 learn_more_url = https://heartbeat.com
 
 [preference_experiment]
-experiment_name = preference_experiment_test
 experiment_doc_url = https://preference.com
 preference_name = preference_name_test
 branch_name = branch_test
+
+[opt-out-study]
+
+[approve]
+comment = test approving recipe
