@@ -9,7 +9,6 @@ secret =
 [recipe]
 filter_expression = true
 
-
 [console_log]
 message = console log message
 

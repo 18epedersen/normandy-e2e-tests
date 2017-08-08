@@ -15,9 +15,7 @@ class Base:
 
     tag = (By.CLASS_NAME, 'ant-tag-text')
 
-    action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)')
-
-
+    action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)') # noqa
 
 
 class LDAPLogin(Base):
@@ -56,7 +54,7 @@ class Home(Base):
     recipes = (By.ID, 'gw-recipes-link')
 
     # TODO: unique id for extensions button
-    extensions = (By.CSS_SELECTOR, 'div.gw-col:nth-child(2) > div:nth-child(1) > div:nth-child(1)')
+    extensions = (By.CSS_SELECTOR, 'div.gw-col:nth-child(2) > div:nth-child(1) > div:nth-child(1)') # noqa
 
 
 class RecipesListing(Base):
@@ -120,9 +118,10 @@ class NewRecipe(Base):
 
     branch_name = (By.ID, 'pef-branch-name')
 
-    # TODO: add unique id for opt-out-study, and currently opt-out-study feature is broken.
+    # TODO: add unique id for opt-out-study,
+    # and currently opt-out-study feature is broken.
     # opt-out-study
-    opt_out_study = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(4)')
+    opt_out_study = (By.CSS_SELECTOR, 'li.ant-select-dropdown-menu-item:nth-child(4)') # noqa
 
 
 class ViewRecipe(Base):
@@ -142,7 +141,8 @@ class ViewRecipe(Base):
 
     disable_button = (By.CLASS_NAME, 'ant-btn-danger')
 
-    action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)')
+    # TODO: action name unique id
+    action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)') # noqa
 
 
 class EditRecipe(NewRecipe):
@@ -151,7 +151,7 @@ class EditRecipe(NewRecipe):
     selected_action_name = (By.CLASS_NAME,
                             'ant-select-selection-selected-value')
     # TODO: view breadcrumb id
-    view_recipe_breadcrumb = (By.CSS_SELECTOR, '.ant-breadcrumb > span:nth-child(3) > span:nth-child(1) > a:nth-child(1)')
+    view_recipe_breadcrumb = (By.CSS_SELECTOR, '.ant-breadcrumb > span:nth-child(3) > span:nth-child(1) > a:nth-child(1)') # noqa
 
 
 class ApprovalHistory(EditRecipe):
@@ -169,14 +169,14 @@ class CloneRecipe(EditRecipe):
     """Locators for cloning a recipe."""
 
     # TODO: unique id for selected recipe on clone recipe page
-    selected_action = (By.CSS_SELECTOR, 'div.ant-select-selection-selected-value:nth-child(2)')
+    selected_action = (By.CSS_SELECTOR, 'div.ant-select-selection-selected-value:nth-child(2)') # noqa
 
 
 class ExtensionsListing(Base):
     """Locators for extensions listing."""
 
     # TODO: unique id for new extensions button
-    new_extensions_button = (By.CSS_SELECTOR, '.ant-col-8 > a:nth-child(1) > button:nth-child(1)')
+    new_extensions_button = (By.CSS_SELECTOR, '.ant-col-8 > a:nth-child(1) > button:nth-child(1)') # noqa
 
 
 class NewExtension(NewRecipe):

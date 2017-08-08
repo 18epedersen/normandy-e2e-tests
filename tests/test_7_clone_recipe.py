@@ -11,7 +11,7 @@ def test_clone_recipe(conf, base_url, selenium, qr_code):
     recipes_listing_page = home_page.click_recipes()
     # view_recipe_page = recipes_listing_page.select_top_recipe()
     new_recipe_page = recipes_listing_page.click_new_recipe()
-    view_recipe_page, recipe_action, recipe_name = new_recipe_page.create_new_recipe(conf)
+    view_recipe_page, recipe_action, recipe_name = new_recipe_page.create_new_recipe(conf) # noqa
     clone_recipe_page = view_recipe_page.click_clone()
     view_recipe_page = clone_recipe_page.clone_recipe(conf)
     assert view_recipe_page.alert_message == "You are viewing a draft."
