@@ -4,7 +4,7 @@ Normandy-e2e-tests
 
 Summary
 -------
-Suite of end-2-end tests for Mozilla's Normandy Control Shield UI. GitHub repo for the Normandy Control Shield UI: https://github.com/mozilla/normandy
+Suite of end-2-end tests for Mozilla's Normandy Control Shield UI. 
 
 
 Each scripts in the tests subdirectory exercises a different workflow of the UI. The tests are ordered 1-7. The tests run sequentially, and the first (test1) will run first, and the last (test7) test will run last.
