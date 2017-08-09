@@ -10,10 +10,10 @@ import json
 def test_restapi(conf, selenium, qr_code):
     """Test adding a recipe."""
     # cookie = {"_csrf": "PjoxkMyr7H331j70ZBmYUepE"}
-    url = "https://normandy.dev.mozaws.net/api/v1/recipe/"
-    # ldap_restapi_page = LDAPLoginRestAPI(selenium, url)
-    # home_page = ldap_restapi_page.setup(conf, qr_code)
+    ldap_restapi_page = LDAPLoginRestAPI(selenium, url)
+    home_page = ldap_restapi_page.setup(conf, qr_code)
     # time.sleep(5)
+    url = "https://normandy.dev.mozaws.net/api/v1/recipe/"
     r = requests.get(url)
     cookies = r.cookies
     print("cookiejar", cookies)

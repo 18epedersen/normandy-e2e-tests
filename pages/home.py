@@ -23,5 +23,8 @@ class Home(Base):
 
     def click_extensions(self):
         """Click extensions to the extensions listing page."""
-        from pages.extensions_listing import extensions_listing
+        from pages.extensions_listing import ExtensionsListing
         extensions = self.find_element(*self.LOCATORS.extensions)
+        extensions.click()
+        return ExtensionsListing(self.selenium,
+                              self.base_url).wait_for_page_to_load()

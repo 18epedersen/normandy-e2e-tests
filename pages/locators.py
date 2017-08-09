@@ -8,10 +8,7 @@ class Base:
     heading_two = (By.TAG_NAME, "h2")
     alert_message = (By.CLASS_NAME, 'ant-alert-message')
 
-    # TODO: make unique id
-    home_breadcrumb = (By.CSS_SELECTOR,
-                       '.ant-breadcrumb > span:nth-child(1) > span:nth-child(1) \
-                       > a:nth-child(1)')
+    home_breadcrumb = (By.ID, 'ant-breadcrumb-link')
 
     tag = (By.CLASS_NAME, 'ant-tag-text')
 
@@ -52,9 +49,7 @@ class Home(Base):
     recipe_card = (By.ID, 'gw-recipes-card')
     a_href = (By.CSS_SELECTOR, 'a')
     recipes = (By.ID, 'gw-recipes-link')
-
-    # TODO: unique id for extensions button
-    extensions = (By.CSS_SELECTOR, 'div.gw-col:nth-child(2) > div:nth-child(1) > div:nth-child(1)') # noqa
+    extensions = (By.ID, 'gw-extensions-card')
 
 
 class RecipesListing(Base):
@@ -73,9 +68,7 @@ class NewRecipe(Base):
 
     recipe_name_field = (By.ID, 'name')
     recipe_filter_expression = (By.ID, 'extra_filter_expression')
-
     action_dropdown = (By.ID, 'rf-action-select')
-
     save_button = (By.ID, 'rf-save-button')
 
     # console log
@@ -170,8 +163,7 @@ class ApprovalHistory(EditRecipe):
 class CloneRecipe(EditRecipe):
     """Locators for cloning a recipe."""
 
-    # TODO: unique id for selected recipe on clone recipe page
-    selected_action = (By.CSS_SELECTOR, 'div.ant-select-selection-selected-value:nth-child(2)') # noqa
+    selected_action = (By.CLASS_NAME, 'ant-select-selection-selected-value')
 
 
 class ExtensionsListing(Base):
@@ -184,8 +176,7 @@ class ExtensionsListing(Base):
 class NewExtension(NewRecipe):
     """Locators for new extension."""
 
-    # TODO: unique id for upload xpi button
-    upload_xpi_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
+    upload_xpi_button = (By.CLASS_NAME, 'ant-upload')
 
     # TODO: unique id for save button
     save_button = (By.CSS_SELECTOR, '.primary > button:nth-child(1)')
