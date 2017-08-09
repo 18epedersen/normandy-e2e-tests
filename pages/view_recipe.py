@@ -27,9 +27,14 @@ class ViewRecipe(Base):
 
     def click_request_approval(self):
         """Click add button to create recipe."""
-        self.find_element(*self.LOCATORS.request_approval_button).click()
-        time.sleep(5)
-        print("in click request approval button")
+        request_approval_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.request_approval_button))
+        print("request approval enabled", request_approval_button.is_enabled())
+        request_approval_button.click()
+        # self.find_element(*self.LOCATORS.request_approval_button).click()
+        time.sleep(10)
+        # print("in click request approval button")
+        # return self
         return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()
 
     def click_edit(self):
@@ -46,16 +51,31 @@ class ViewRecipe(Base):
     def click_approval_request(self):
         """Click approval request button."""
         from pages.approval_history import ApprovalHistory
-        self.find_element(*self.LOCATORS.approval_request_button).click()
+        print("entered click approval request")
+        approval_request_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.approval_request_button))
+        print("approval enabled", approval_request_button.is_enabled())
+        approval_request_button.click()
+        # self.find_element(*self.LOCATORS.approval_request_button).click()
         return ApprovalHistory(self.selenium,
                                self.base_url).wait_for_page_to_load()
 
     def publish_recipe(self):
         """Publish a recipe."""
-        self.find_element(*self.LOCATORS.publish_button).click()
-        ok_button = self.wait.until(EC.element_to_be_clickable(
-          self.LOCATORS.ok_button))
-        ok_button.click()
+        publish_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.publish_button))
+        print("published enabled", publish_button.is_enabled())
+        publish_button.click()
+        # self.find_element(*self.LOCATORS.publish_button).click()
+        # ok_button = self.wait.until(EC.element_to_be_clickable(
+        #   self.LOCATORS.ok_button))
+        # print("ok enabled", ok_button.is_enabled())
+        # ok_button.click()
+        cancel_button = self.wait.until(EC.element_to_be_clickable(
+          self.LOCATORS.cancel_button))
+        print("ok enabled", cancel_button.is_enabled())
+        cancel_button.click()
+        time.sleep(10)
         # return self
 
     def disable_recipe(self):

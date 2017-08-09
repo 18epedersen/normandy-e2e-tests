@@ -135,7 +135,6 @@ class ViewRecipe(Base):
 
     # TODO: unique id for publish button
     publish_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(3)')
-
     # TODO: unique id for ok button
     ok_button = (By.CSS_SELECTOR, 'button.ant-btn:nth-child(2)')
 
@@ -143,6 +142,9 @@ class ViewRecipe(Base):
 
     # TODO: action name unique id
     action_name = (By.CSS_SELECTOR, 'div.ant-card:nth-child(2) > div:nth-child(2) > dl:nth-child(1) > dd:nth-child(2)') # noqa
+
+    # TODO: cancel button
+    cancel_button = (By.CSS_SELECTOR, 'button.ant-btn-lg:nth-child(1)')
 
 
 class EditRecipe(NewRecipe):
