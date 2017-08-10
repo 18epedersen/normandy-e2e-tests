@@ -26,8 +26,9 @@ class ViewRecipe(Base):
         """Click request approval and return view recipe page."""
         request_approval_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.request_approval_button))
-        request_approval_button.click()
         time.sleep(10)
+        request_approval_button.click()
+        time.sleep(5)
         return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()
 
     def click_edit(self):

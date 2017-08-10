@@ -138,7 +138,9 @@ class ApprovalHistory(EditRecipe):
 class CloneRecipe(EditRecipe):
     """Locators for cloning a recipe."""
 
-    selected_action = (By.CLASS_NAME, 'ant-select-selection-selected-value')
+    # selected_action = (By.CLASS_NAME, 'ant-select-selection-selected-value')
+    selected_action = (By.CSS_SELECTOR,
+                       'div.ant-select-selection-selected-value:nth-child(2)')
 
 
 class ExtensionsListing(Base):

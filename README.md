@@ -7,12 +7,11 @@ Summary
 Suite of end-2-end tests for Mozilla's Normandy Control Shield UI. 
 
 
-Each scripts in the tests subdirectory exercises a different workflow of the UI. The tests are ordered 1-9. The tests run sequentially, and the first (test1) will run first, and the last (test9) test will run last.
+Each scripts in the tests subdirectory exercises a different workflow of the UI. The tests are ordered 1-8. The tests run sequentially, and the first (test1) will run first, and the last (test8) test will run last.
 
 
 The workflows tested are:
 
-1. Adding a new recipe 
 2. Filling out the recipe form
 3. Editing a recipe
 4. Approving a recipe
@@ -22,7 +21,7 @@ The workflows tested are:
 8. Verifying that recipes created in the UI are created in the restful api endpoint
 9. Uploading a web extension
 
-Tests 8 and 9 are skipped, which is addressed in issues #11 and #9, respectively.
+Tests 7 and 8 are skipped, which is addressed in issues #11 and #9, respectively.
 
 
 Install

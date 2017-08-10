@@ -19,7 +19,8 @@ class CloneRecipe(Base):
         recipe_name_field.clear()
         recipe_name_field.send_keys(recipe_name)
         selected_action = self.find_element(*self.LOCATORS.selected_action)
-        if selected_action == 'preference-experiment':
+        selected_action_text = selected_action.text
+        if selected_action_text == 'preference-experiment':
             experiment_name = str(uuid.uuid1().hex)
             experiment_name_field = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.experiment_name))

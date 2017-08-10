@@ -20,7 +20,8 @@ class NewRecipe(Base):
         from random import choice
         # TODO: opt-out-study action currently not functioning
         # actions = ['console-log', 'show-heartbeat', 'preference-experiment','opt-out-study']  # noqa
-        actions = ['console-log', 'show-heartbeat', 'preference-experiment']
+        # actions = ['console-log', 'show-heartbeat', 'preference-experiment']
+        actions = ['preference-experiment']
         action = choice(actions)
         return action
 
