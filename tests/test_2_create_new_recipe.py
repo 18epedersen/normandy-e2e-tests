@@ -3,6 +3,7 @@ from pages.ldap_login import LDAPLogin
 import time
 
 
+# @pytest.mark.skip(reason="extension feature wasn't implemented during testing")
 @pytest.mark.nondestructive
 def test_create_new_recipe(conf, base_url, selenium, qr_code):
     """Test creating a new recipe."""

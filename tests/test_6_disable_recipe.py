@@ -1,5 +1,6 @@
 import pytest
 from pages.ldap_login import LDAPLogin
+import time
 
 
 @pytest.mark.nondestructive

@@ -22,7 +22,6 @@ class EditRecipe(Base):
     def edit_recipe(self, conf):
         """Save recipe with a unique UUID."""
         """Return a recipe page, recipe name, and notification's texts."""
-        recipe_name = self.get_recipe_name()
         current_recipe_action = self.get_selected_action()
         new_recipe_action = self.pick_new_random_action(current_recipe_action)
         self.configure_action(conf, new_recipe_action)
