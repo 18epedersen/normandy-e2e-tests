@@ -31,19 +31,3 @@ class DuoLogin(Base):
         self.find_element(*self.LOCATORS.login_button).click()
         self.selenium.switch_to_default_content()
         return Home(self.selenium, self.base_url).wait_for_page_to_load()
-
-    def duo_login_restapi(self, qr_code):
-        """Log into duo."""
-        self.selenium.switch_to_frame(
-         self.find_element(*self.LOCATORS.duo_iframe))
-        dropdown_element = self.wait.until(EC.element_to_be_clickable(
-          self.LOCATORS.dropdown))
-        select = Select(dropdown_element)
-        select.select_by_value(self.LOCATORS.value)
-        passcode_button = self.wait.until(EC.element_to_be_clickable(
-          self.LOCATORS.passcode_button))
-        passcode_button.click()
-        self.find_element(*self.LOCATORS.QR_input).send_keys(qr_code)
-        self.find_element(*self.LOCATORS.login_button).click()
-        self.selenium.switch_to_default_content()
-        # return Home(self.selenium, self.base_url).wait_for_page_to_load()

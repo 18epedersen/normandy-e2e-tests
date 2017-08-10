@@ -2,43 +2,26 @@ from selenium.webdriver.support import expected_conditions as EC
 from pages.base import Base
 from pages import locators
 import time
+from random import choice
+import uuid
 
 
 class EditRecipe(Base):
-    """Edit Recipe."""
+    """Edit Recipe page."""
 
     LOCATORS = locators.EditRecipe
 
-    # def get_recipe_name(self):
-    #     """Get the recipe name."""
-    #     recipe_name_field = self.wait.until(EC.element_to_be_clickable(
-    #       self.LOCATORS.recipe_name_field))
-    #     name = recipe_name_field.get_attribute('value')
-    #     print("name", name)
-    #     return name
-    #
-    # def get_selected_action(self):
-    #     """Get current recipe action."""
-    #     selected_action_name = self.find_element(
-    #      *self.LOCATORS.selected_action_name)
-    #     selected_recipe_action_text = selected_action_name.text
-    #     print("selected recipe action ", selected_recipe_action_text)
-    #     return selected_recipe_action_text
-
     def pick_new_random_action(self, selected_recipe_action):
         """Return a random recipe action."""
-        from random import choice
         actions = ['console-log', 'show-heartbeat', 'preference-experiment']
         new_recipe_action = selected_recipe_action
         while new_recipe_action == selected_recipe_action:
             new_recipe_action = choice(actions)
-        print("new action is ", new_recipe_action)
         return new_recipe_action
 
     def edit_recipe(self, conf):
         """Save recipe with a unique UUID."""
         """Return a recipe page, recipe name, and notification's texts."""
-        # from pages.new_recipe import configure_action
         recipe_name = self.get_recipe_name()
         current_recipe_action = self.get_selected_action()
         new_recipe_action = self.pick_new_random_action(current_recipe_action)
@@ -46,14 +29,10 @@ class EditRecipe(Base):
         save_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.save_button))
         save_button.click()
-        print("recipename ", recipe_name)
-        print("newrecipeacton", new_recipe_action)
         return new_recipe_action, self
-        # time.sleep(500)
 
     def select_random_branch_preference(self):
         """Select a random branch preference."""
-        from random import choice
         print("entered random branch preference")
         preferences = [True, False]
         random_preference = choice(preferences)
@@ -104,8 +83,7 @@ class EditRecipe(Base):
             preference_experiment = self.wait.until(EC.element_to_be_clickable(
               self.LOCATORS.preference_experiment))
             preference_experiment.click()
-            experiment_name = conf.get('preference_experiment',
-                                       'experiment_name')
+            experiment_name = str(uuid.uuid1().hex)
             experiment_doc_url = conf.get('preference_experiment',
                                           'experiment_doc_url')
             preference_name = conf.get('preference_experiment',
@@ -128,7 +106,7 @@ class EditRecipe(Base):
 
     def click_view_recipe_breadcrumb(self):
         """Click on the view recipe breadcrumb."""
-        time.sleep(5)
         from pages.view_recipe import ViewRecipe
+        time.sleep(5)
         self.find_element(*self.LOCATORS.view_recipe_breadcrumb).click()
         return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()

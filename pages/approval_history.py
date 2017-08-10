@@ -5,31 +5,24 @@ import time
 
 
 class ApprovalHistory(Base):
-    """Home Class for Normandy Control UI."""
+    """Approval History page."""
 
     LOCATORS = locators.ApprovalHistory
 
-    @property
-    def get_tag(self):
-        """Getter for tag."""
-        tag_text = self.find_element(*self.LOCATORS.tag).text
-        return tag_text
-
-    # need to fix what the approval history page is waiting for when load
     def wait_for_page_to_load(self):
-        """Wait for visibility of rows on Normandy's home page to load."""
+        """Wait for visibility of approve button."""
         self.wait.until(EC.visibility_of_element_located(
          self.LOCATORS.approve))
         return self
 
     def click_approve(self):
-        """Click recipes to go to recipes listing page."""
+        """Click approve button."""
         approve_button = self.find_element(*self.LOCATORS.approve)
         approve_button.click()
         return self
 
     def approve_recipe(self, conf):
-        """Approve a recipe."""
+        """Approve a recipe by sending in a comment and clicking approve."""
         comment = conf.get('approve', 'comment')
         self.find_element(*self.LOCATORS.comment).clear()
         self.find_element(*self.LOCATORS.comment).send_keys(comment)
@@ -39,7 +32,7 @@ class ApprovalHistory(Base):
 
     def click_view_recipe_breadcrumb(self):
         """Click on the view recipe breadcrumb."""
-        time.sleep(5)
         from pages.view_recipe import ViewRecipe
+        time.sleep(5)
         self.find_element(*self.LOCATORS.view_recipe_breadcrumb).click()
         return ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load()

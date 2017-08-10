@@ -16,6 +16,7 @@ class LDAPLogin(Base):
         return self
 
     def ldap_login(self, conf):
+        """Login into LDAP."""
         """Return Duo class after logging in with demo LDAP account."""
         username = conf.get('login', 'username')
         password = conf.get('login', 'password')
@@ -26,7 +27,7 @@ class LDAPLogin(Base):
         return DuoLogin(self.selenium, self.base_url).wait_for_page_to_load()
 
     def setup(self, conf, qr_code):
-        """Return Normandy home page after loginning into ldap and duo."""
+        """Return home page after loginning into ldap and duo."""
         duo_page = self.ldap_login(conf)
         home_page = duo_page.duo_login(qr_code)
         return home_page

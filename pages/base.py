@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class Base(Page):
-    """Define a base class."""
+    """Base class."""
 
     LOCATORS = locators.Base
 

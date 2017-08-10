@@ -5,12 +5,12 @@ import time
 
 
 class NewRecipe(Base):
-    """Recipe class."""
+    """New recipe page."""
 
     LOCATORS = locators.NewRecipe
 
     def wait_for_page_to_load(self):
-        """Wait for recipe page's submit button."""
+        """Wait for save button."""
         self.wait.until(EC.visibility_of_element_located(
          self.LOCATORS.save_button))
         return self
@@ -19,15 +19,14 @@ class NewRecipe(Base):
         """Return a random recipe action."""
         from random import choice
         # TODO: opt-out-study action currently not functioning
-        # actions = ['console-log', 'show-heartbeat', 'preference-experiment', 'opt-out-study']
+        # actions = ['console-log', 'show-heartbeat', 'preference-experiment','opt-out-study']  # noqa
         actions = ['console-log', 'show-heartbeat', 'preference-experiment']
         action = choice(actions)
-        print("action is ", action)
         return action
 
     def create_new_recipe(self, conf):
-        """Save recipe with a unique UUID."""
-        """Return a recipe page, recipe name, and notification's texts."""
+        """Create a new recipe with a unique UUID."""
+        """Return a view recipe page, recipe action, and recipe name."""
         import uuid
         from pages.view_recipe import ViewRecipe
         recipe_name = str(uuid.uuid1().hex)
@@ -44,8 +43,8 @@ class NewRecipe(Base):
         save_button = self.wait.until(EC.element_to_be_clickable(
           self.LOCATORS.save_button))
         save_button.click()
-        return ViewRecipe(self.selenium,
-                          self.base_url).wait_for_page_to_load(), recipe_action, recipe_name
+        view_recipe = ViewRecipe(self.selenium, self.base_url).wait_for_page_to_load() # noqa
+        return view_recipe, recipe_action, recipe_name
 
     def select_random_branch_preference(self):
         """Select a random branch preference."""

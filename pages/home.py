@@ -4,7 +4,7 @@ from pages import locators
 
 
 class Home(Base):
-    """Home Class for Normandy Control UI."""
+    """Home page."""
 
     LOCATORS = locators.Home
 
@@ -27,4 +27,4 @@ class Home(Base):
         extensions = self.find_element(*self.LOCATORS.extensions)
         extensions.click()
         return ExtensionsListing(self.selenium,
-                              self.base_url).wait_for_page_to_load()
+                                 self.base_url).wait_for_page_to_load()

@@ -7,7 +7,7 @@ from pages.view_recipe import ViewRecipe
 
 
 class CloneRecipe(Base):
-    """Edit Recipe."""
+    """Clone Recipe page."""
 
     LOCATORS = locators.CloneRecipe
 
