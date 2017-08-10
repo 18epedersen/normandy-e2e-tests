@@ -7,7 +7,7 @@ Summary
 Suite of end-2-end tests for Mozilla's Normandy Control Shield UI. 
 
 
-Each scripts in the tests subdirectory exercises a different workflow of the UI. The tests are ordered 1-8. The tests run sequentially, and the first (test1) will run first, and the last (test8) test will run last.
+Each script in the tests subdirectory exercises a different workflow of the UI. The tests are ordered 1-8. The tests run sequentially, and the first (test1) will run first, and the last (test8) test will run last.
 
 
 The workflows tested are:
@@ -65,4 +65,6 @@ For example:
 tox -e approve_recipe
 ```
 
-After the first test, each test begins with a time.sleep(30). This is because if two tests run sequentially without a sleep, the following test may use the some QR code as the previous test for logging into duo authentication. This would cause the following test to automatically fail because QR codes cannot be reused within a 30 second timespan.
+Due to timing constraints of duo authentication, the tests are a bit flaky. 
+
+Therefore after the first test, each test begins with a time.sleep(30). This is because if two tests run sequentially without a sleep, the following test may use the some QR code as the previous test for logging into duo authentication. This would cause the following test to automatically fail because QR codes cannot be reused within a short timespan.
